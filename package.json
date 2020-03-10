@@ -1,0 +1,23 @@
+{
+  "name": "grapesjs-preset-mautic",
+  "version": "1.0.1",
+  "description": "Grapesjs Preset Mautic",
+  "main": "dist/grapesjs-preset-mautic.min.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Webmecanik/grapesjs-preset-mautic.git"
+  },
+  "scripts": {
+    "start": "grapesjs-cli serve",
+    "build": "grapesjs-cli build",
+    "bump": "npm version patch -m 'Bump v%s'"
+  },
+  "keywords": [
+    "grapesjs",
+    "plugin"
+  ],
+  "devDependencies": {
+    "grapesjs-cli": "^1.0.12"
+  },
+  "license": "MIT"
+}
