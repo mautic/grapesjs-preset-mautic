@@ -3,10 +3,8 @@
 > **Plugin to add GrapesJS features**  
 - Add function to edit source code
 - Extend the original image and add a confirm dialog before removing it
-- Option to enable/disable Layers Manager
 - Option to enable/disable Import code button
 - Move Settings panel inside Style Manager panel
-- Remove Layer Manager panel
 - Open Block Manager at launch
 
 
@@ -20,7 +18,6 @@
 | sourceEditBtnLabel     | Label for source code button     | 'Edit'          |
 | sourceEditModalTitle   | Title for source code modal      | 'Edit code'     |
 | deleteAssetConfirmText | Label for asset deletion confirm | 'Are you sure?' |
-| showLayersManager      | Show Layers Manager panel        | false           |
 | showImportButton       | Show Import code button          | false           |
 
 
