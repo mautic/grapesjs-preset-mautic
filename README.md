@@ -6,6 +6,7 @@
 - Option to enable/disable Import code button
 - Move Settings panel inside Style Manager panel
 - Open Block Manager at launch
+- Replace Rich Text Editor by Froala used in Mautic (add token support)
 
 
 
@@ -19,7 +20,7 @@
 | sourceEditModalTitle   | Title for source code modal      | 'Edit code'     |
 | deleteAssetConfirmText | Label for asset deletion confirm | 'Are you sure?' |
 | showImportButton       | Show Import code button          | false           |
-
+| replaceRteWithFroala   | Replace RTE with Froala          | true            |
 
 
 ## Summary
