@@ -14,15 +14,18 @@
 
 ## Options
 
-| Option                 | Description                      | Default         |
-| ---------------------- | -------------------------------- | --------------- |
-| sourceEdit             | Activate source code edition     | true            |
-| sourceEditBtnLabel     | Label for source code button     | 'Edit'          |
-| sourceEditModalTitle   | Title for source code modal      | 'Edit code'     |
-| deleteAssetConfirmText | Label for asset deletion confirm | 'Are you sure?' |
-| showLayersManager      | Show Layers Manager panel        | false           |
-| showImportButton       | Show Import code button          | false           |
-| replaceRteWithFroala   | Replace RTE with Froala          | true            |
+| Option                 | Description                         | Default         |
+| ---------------------- | ----------------------------------- | --------------- |
+| sourceEdit             | Activate source code edition        | true            |
+| sourceEditBtnLabel     | Label for source code button save   | 'Edit'          |
+| sourceCancelBtnLabel   | Label for source code button cancel | 'Cancel'        |
+| sourceEditModalTitle   | Title for source code modal         | 'Edit code'     |
+| deleteAssetConfirmText | Label for asset deletion confirm    | 'Are you sure?' |
+| showLayersManager      | Show Layers Manager panel           | false           |
+| showImportButton       | Show Import code button             | false           |
+| replaceRteWithFroala   | Replace RTE with Froala             | true            |
+| categorySectionLabel   | Category 'section' label            | 'Sections'      |
+| categoryBlockLabel     | Category 'block' label              | 'Blocks'        |
 
 
 ## Summary
@@ -103,7 +106,7 @@ Start the dev server
 $ npm start
 ```
 
-Build the source
+Build the source and use js from build folder to your project
 
 ```sh
 $ npm run build
