@@ -8,24 +8,27 @@
 - Move Settings panel inside Style Manager panel
 - Open Block Manager at launch
 - Replace Rich Text Editor by Froala used in Mautic (add token support)
-
+- Add Dynamic Content Block used in Mautic
 
 
 
 ## Options
 
-| Option                 | Description                         | Default         |
-| ---------------------- | ----------------------------------- | --------------- |
-| sourceEdit             | Activate source code edition        | true            |
-| sourceEditBtnLabel     | Label for source code button save   | 'Edit'          |
-| sourceCancelBtnLabel   | Label for source code button cancel | 'Cancel'        |
-| sourceEditModalTitle   | Title for source code modal         | 'Edit code'     |
-| deleteAssetConfirmText | Label for asset deletion confirm    | 'Are you sure?' |
-| showLayersManager      | Show Layers Manager panel           | false           |
-| showImportButton       | Show Import code button             | false           |
-| replaceRteWithFroala   | Replace RTE with Froala             | true            |
-| categorySectionLabel   | Category 'section' label            | 'Sections'      |
-| categoryBlockLabel     | Category 'block' label              | 'Blocks'        |
+| Option                   | Description                           | Default                |
+| ------------------------ | ------------------------------------- | ---------------------- |
+| sourceEdit               | Activate source code edition          | true                   |
+| sourceEditBtnLabel       | Label for source code button save     | 'Edit'                 |
+| sourceCancelBtnLabel     | Label for source code button cancel   | 'Cancel'               |
+| sourceEditModalTitle     | Title for source code modal           | 'Edit code'            |
+| deleteAssetConfirmText   | Label for asset deletion confirm      | 'Are you sure?'        |
+| showLayersManager        | Show Layers Manager panel             | false                  |
+| showImportButton         | Show Import code button               | false                  |
+| replaceRteWithFroala     | Replace RTE with Froala               | true                   |
+| categorySectionLabel     | Category 'section' label              | 'Sections'             |
+| categoryBlockLabel       | Category 'block' label                | 'Blocks'               |
+| dynamicContentBlockLabel | Label for Dynamic Content block       | 'Dynamic Content'      |
+| dynamicContentBtnLabel   | Label for Dynamic Content button save | 'Save'                 |
+| dynamicContentModalTitle | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
 
 
 ## Summary
