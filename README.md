@@ -1,6 +1,9 @@
 # GrapesJS Preset Mautic
 
-> **Plugin to add GrapesJS features**  
+This preset configures GrapesJS to be used as a Mautic Builder with some unique features and blocks.
+
+### Plugin to add GrapesJS features
+ 
 - Add function to edit source code
 - Extend the original image and add a confirm dialog before removing it
 - Option to hide/show Layers Manager
