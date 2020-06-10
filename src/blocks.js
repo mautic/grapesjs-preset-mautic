@@ -7,6 +7,18 @@ export default (editor, opts = {}) => {
     // Add Dynamic Content block only for newsletter
     if (cfg.plugins.includes('grapesjs-mjml')) {
         // Dynamic Content MJML block
+        bm.add('dynamic-content', {
+            label: opts.dynamicContentBlockLabel,
+            activate: true,
+            select: true,
+            attributes: { class: 'fa fa-tag' },
+            content: {
+                type: 'dynamic-content',
+                content: '<table><tr><td>{dynamiccontent="Dynamic Content"}</td></tr></table>',
+                style: { padding: '10px' },
+                activeOnRender: 1
+            }
+        });
     } else if (cfg.plugins.includes('gjs-preset-newsletter')) {
         bm.add('dynamic-content', {
             label: opts.dynamicContentBlockLabel,
