@@ -10,6 +10,9 @@
   "scripts": {
     "start": "grapesjs-cli serve",
     "build": "grapesjs-cli build",
+    "lint": "eslint src/",
+    "prettier": "node_modules/.bin/prettier -w src/",
+    "prettier-check": "node_modules/.bin/prettier -c src/",
     "bump": "npm version patch -m 'Bump v%s'"
   },
   "keywords": [
@@ -17,7 +20,12 @@
     "plugin"
   ],
   "devDependencies": {
-    "grapesjs-cli": "^1.0.12"
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "grapesjs-cli": "^1.0.12",
+    "prettier": "^2.2.1"
   },
   "license": "MIT"
 }
