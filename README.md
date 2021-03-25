@@ -97,7 +97,7 @@ const editor = grapesjs.init({
 Clone the repository
 
 ```sh
-$ git clone https://github.com/Webmecanik/grapesjs-preset-mautic.git
+$ git clone https://github.com/mautic/grapesjs-preset-mautic.git
 $ cd grapesjs-preset-mautic
 ```
 
