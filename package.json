@@ -37,5 +37,19 @@
     "parcel-bundler": "^1.12.4",
     "prettier": "^2.2.1"
   },
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": ["airbnb/base", "plugin:prettier/recommended"],
+    "ignorePatterns": ["src/api/mautic"],
+    "parser": "babel-eslint",
+    "plugins": ["prettier"]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
   "license": "MIT"
 }
