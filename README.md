@@ -29,7 +29,6 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 | replaceRteWithFroala        | Replace RTE with Froala               | true                   |
 | categorySectionLabel        | Category 'section' label              | 'Sections'             |
 | categoryBlockLabel          | Category 'block' label                | 'Blocks'               |
-| dynamicContentBtnLabel      | Label for Dynamic Content button save | 'Save'                 |
 | dynamicContentModalTitle    | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
 | dynamicContentFroalaButtons | Froala buttons for Dynamic Content    | ['undo', 'redo', '&#124;', 'bold', 'italic', 'underline', 'fontSize',<br> 'color', 'align', 'formatOL', 'formatUL', 'quote',<br> 'clearFormatting', 'token', 'insertLink', 'insertImage', 'html'] |
 
