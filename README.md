@@ -42,7 +42,7 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 ## Download
 
 * GIT
-  * `git clone https://github.com/Webmecanik/grapesjs-preset-mautic.git`
+  * `git clone https://github.com/mautic/grapesjs-preset-mautic.git`
 
 
 
@@ -95,7 +95,7 @@ const editor = grapesjs.init({
 Clone the repository
 
 ```sh
-$ git clone https://github.com/Webmecanik/grapesjs-preset-mautic.git
+$ git clone https://github.com/mautic/grapesjs-preset-mautic.git
 $ cd grapesjs-preset-mautic
 ```
 
