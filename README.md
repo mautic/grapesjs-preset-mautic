@@ -10,7 +10,6 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 - Option to enable/disable Import code button
 - Move Settings panel inside Style Manager panel
 - Open Block Manager at launch
-- Replace Rich Text Editor by Froala used in Mautic (add token support)
 - Add Dynamic Content Block used in Mautic
 
 
@@ -26,14 +25,9 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 | deleteAssetConfirmText      | Label for asset deletion confirm      | 'Are you sure?'        |
 | showLayersManager           | Show Layers Manager panel             | false                  |
 | showImportButton            | Show Import code button               | false                  |
-| replaceRteWithFroala        | Replace RTE with Froala               | true                   |
 | categorySectionLabel        | Category 'section' label              | 'Sections'             |
 | categoryBlockLabel          | Category 'block' label                | 'Blocks'               |
-| dynamicContentBlockLabel    | Label for Dynamic Content block       | 'Dynamic Content'      |
-| dynamicContentBtnLabel      | Label for Dynamic Content button save | 'Save'                 |
 | dynamicContentModalTitle    | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
-| dynamicContentFroalaButtons | Froala buttons for Dynamic Content    | ['undo', 'redo', '&#124;', 'bold', 'italic', 'underline', 'fontSize',<br> 'color', 'align', 'formatOL', 'formatUL', 'quote',<br> 'clearFormatting', 'token', 'insertLink', 'insertImage', 'html'] |
-
 
 ## Summary
 
@@ -44,7 +38,7 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 ## Download
 
 * GIT
-  * `git clone https://github.com/Webmecanik/grapesjs-preset-mautic.git`
+  * `git clone https://github.com/mautic/grapesjs-preset-mautic.git`
 
 
 

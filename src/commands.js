@@ -1,43 +1,28 @@
-import CodeEditor from './codeEditor';
-import DynamicContent from './dynamicContent';
+import DynamicContentCommands from './dynamicContent/dynamicContent.commands';
 
-export default (editor, opts = {}) => {
-  const cmd = editor.Commands;
+export default (editor) => {
+  const dynamicContentCmd = new DynamicContentCommands(editor);
 
-  let codeEditor;
-  let dynamicContent;
-
-  // Launch Code Editor popup
-  cmd.add('preset-mautic:code-edit', {
-    run: (editor, sender, options = {}) => {
-      if (!codeEditor) codeEditor = new CodeEditor(editor, opts);
-      sender && sender.set('active', 0);
-
-      // Transform DC to token
-      Mautic.grapesConvertDynamicContentSlotsToTokens(editor);
-      codeEditor.showCodePopup();
+  // Launch Dynamic Content popup: new or edit
+  // Once the command is active, it has to be stopped before it can be run again.
+  editor.Commands.add('preset-mautic:dynamic-content-open', {
+    run: (edtr, sender, options = {}) => {
+      // dynamicContentCmd.convertDynamicContentTokensToSlots();
+      dynamicContentCmd.launchDynamicContentPopup(edtr, sender, options);
     },
-    stop: (editor) => {
-      // Transform token to DC
-      Mautic.grapesConvertDynamicContentTokenToSlot(editor);
-    },
+    stop: (edtr) => dynamicContentCmd.stopDynamicContentPopup(edtr),
   });
-
-  // Launch Dynamic Content popup
-  cmd.add('preset-mautic:dynamic-content', {
-    run: (editor, sender, options = {}) => {
-      const { target } = options;
-      const component = target || editor.getSelected();
-
-      if (!dynamicContent) dynamicContent = new DynamicContent(editor, opts);
-
-      dynamicContent.showCodePopup(component);
-      // Transform DC to token
-      Mautic.grapesConvertDynamicContentSlotsToTokens(editor);
-    },
-    stop: (editor) => {
-      // Transform token to DC
-      Mautic.grapesConvertDynamicContentTokenToSlot(editor);
-    },
+  // Slot to {token}
+  editor.Commands.add('preset-mautic:dynamic-content-slots-to-tokens', {
+    run: (edtr) => dynamicContentCmd.convertDynamicContentSlotsToTokens(edtr),
+  });
+  // {token} to slot
+  editor.Commands.add('preset-mautic:dynamic-content-tokens-to-slots', {
+    run: () => dynamicContentCmd.convertDynamicContentTokensToSlots(),
+  });
+  // delte store item
+  editor.Commands.add('preset-mautic:dynamic-content-delete-store-item', {
+    run: (edtr, sender, options) =>
+      dynamicContentCmd.deleteDynamicContentStoreItem(edtr, sender, options),
   });
 };

@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "grapesjs-cli serve",
-    "build": "grapesjs-cli build",
+    "build": "babel src/ -d dist/",
     "lint": "eslint src/",
     "prettier": "node_modules/.bin/prettier -w src/",
     "prettier-check": "node_modules/.bin/prettier -c src/",
@@ -20,12 +20,47 @@
     "plugin"
   ],
   "devDependencies": {
-    "eslint": "^7.21.0",
+    "@babel/cli": "^7.13.14",
+    "@babel/core": "^7.13.15",
+    "@babel/plugin-proposal-class-properties": "^7.12.13",
+    "@babel/plugin-transform-runtime": "^7.12.15",
+    "@babel/preset-flow": "^7.13.13",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.20.0",
     "eslint-config-airbnb": "^18.2.1",
-    "eslint-config-prettier": "^8.1.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^3.3.1",
-    "grapesjs-cli": "^1.0.12",
+    "eslint-plugin-react": "^7.22.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "parcel-bundler": "^1.12.4",
     "prettier": "^2.2.1"
   },
-  "license": "MIT"
+  "eslintConfig": {
+    "env": {
+      "browser": true
+    },
+    "extends": [
+      "airbnb/base",
+      "plugin:prettier/recommended"
+    ],
+    "ignorePatterns": [
+      "src/api/mautic"
+    ],
+    "parser": "babel-eslint",
+    "plugins": [
+      "prettier"
+    ]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "mjml": "^4.9.3",
+    "mjml-browser": "^4.9.3"
+  }
 }
