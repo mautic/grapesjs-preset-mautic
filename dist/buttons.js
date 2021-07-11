@@ -25,9 +25,12 @@ export default ((editor, opts = {}) => {
     }
   } // disable useless export button since not all of .then(function (response) {
   // template is exportet (in favour of code editor)
+  // Causes issue: https://github.com/artf/grapesjs/issues/3444
+  // @todo Possible workaround: hide it with css
+  // editor.Panels.getButton('options', 'export-template').attributes.className = 'hide_panel_btn'
+  // pm.removeButton('options', 'export-template');
+  // Move Undo & Redo inside Commands Panel
 
-
-  pm.removeButton('options', 'export-template'); // Move Undo & Redo inside Commands Panel
 
   const undo = pm.getButton('options', 'undo');
   const redo = pm.getButton('options', 'redo');
