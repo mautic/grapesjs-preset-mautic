@@ -1,4 +1,6 @@
 import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
+import ContentService from './content.service';
+
 export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
   const cfg = editor.getConfig();
@@ -10,6 +12,35 @@ export default ((editor, opts = {}) => {
     dcb.addDynamciContentBlock();
   } // Add icon to mj-hero
 
+
+  //add button block for landing page 
+  const mode = ContentService.getMode(editor);    
+  if (mode === ContentService.modePageHtml) {
+    bm.add('button', {
+      label: 'Button',
+      category : Mautic.translate('grapesjsbuilder.categoryBlockLabel'),
+      attributes: {
+        class: 'gjs-fonts gjs-f-button'
+      },
+      content: 
+        `<style>
+            .button {
+              display:inline-block;
+              text-decoration:none;
+              border-color:#4e5d9d;
+              border-width:10px 20px;
+              border-style:solid;
+              -webkit-border-radius:3px;
+              -moz-border-radius:3px;
+              border-radius:3px;
+              background-color:#4e5d9d;
+              font-size:16px;
+              color:#ffffff;
+            }           
+         </style>
+         <a href="#" target="_blank" class="button">Button</a>`,
+    });
+  }
 
   if (typeof bm.get('mj-hero') !== 'undefined') {
     bm.get('mj-hero').set({
