@@ -124,18 +124,18 @@ $ npm run build
 1. Build the preset: `npm run build` (done by author)
 2. [Create a PR](https://github.com/mautic/grapesjs-preset-mautic/pulls) (done by author)
 3. Fork the repo: `gh repo fork mautic/grapesjs-preset-mautic`
-4. Clone the repo: `gh repo clone USERNAME/grapesjs-preset-mautic && gh pr checkout <pr number>`
+4. Clone the repo: `gh repo clone USERNAME/grapesjs-preset-mautic && gh pr checkout PRNUMBER>`
 5. Change into the plugin directory: e.g. `cd mautic/plugins/GrapesJSBuilderBundle`
-6. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/builder.service.js` to the local version of the preset. E.g.
+6. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR as well. E.g. `gh pr checkout PRNUMBER`
+7. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/builder.service.js` to the local version of the preset. E.g.
   ```js
   // import grapesjsmautic from 'grapesjs-preset-mautic';
   import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
   ```
   > Locate the preset repo by starting from this location: plugins/GrapesJsBuilderBundle/Assets/library/js/. In the above example we assume that the preset is one folder above Mautic
-7. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR as well. E.g. `gh pr checkout PR`
 8. Install the global depencency (make sure it is v1): `npm install parcel@1`
 9. Install the project depencencies: `npm install`
-10. Build the JS code of the **plugin** 'plugin-grapesjs-builder' in the dev mode (not minified): `npm run build-dev`
+10.  Build the JS code of the **plugin** 'plugin-grapesjs-builder' in the dev mode (not minified): `npm run build-dev`
 11. Test the code locally. Make sure nothing is cached. Recommended way is using the incognito mode. E.g. https://mautic.ddev.site/s/emails
 12. Check the browser console if you find errors. They help a lot with debugging!
 
