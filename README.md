@@ -131,7 +131,7 @@ $ npm run build
   ```js
   // import grapesjsmautic from 'grapesjs-preset-mautic';
 import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
-
+  ```
 7. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/codeMode/codeEditor.js` to the local version of the preset. E.g.
   ```js
 import MjmlService from '../../../../../../../grapesjs-preset-mautic/dist/mjml/mjml.service';
