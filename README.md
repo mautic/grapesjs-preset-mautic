@@ -129,7 +129,9 @@ $ npm run build
 6. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/builder.service.js` to the local version of the preset. E.g.
   ```js
   // import grapesjsmautic from 'grapesjs-preset-mautic';
-  import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
+import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
+import mjmlService from '../../../../../../grapesjs-preset-mautic/dist/mjml/mjml.service';
+import contentService from '../../../../../../grapesjs-preset-mautic/dist/content.service';```
   ```
   > Locate the preset repo by starting from this location: plugins/GrapesJsBuilderBundle/Assets/library/js/. In the above example we assume that the preset is one folder above Mautic
 7. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR as well. E.g. `gh pr checkout PR`
