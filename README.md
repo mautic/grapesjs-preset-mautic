@@ -130,10 +130,16 @@ $ npm run build
 7. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/builder.service.js` to the local version of the preset. E.g.
   ```js
   // import grapesjsmautic from 'grapesjs-preset-mautic';
-  import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
+import grapesjsmautic from '../../../../../../grapesjs-preset-mautic/src';
+
+7. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/codeMode/codeEditor.js` to the local version of the preset. E.g.
+  ```js
+import MjmlService from '../../../../../../../grapesjs-preset-mautic/dist/mjml/mjml.service';
+import ContentService from '../../../../../../../grapesjs-preset-mautic/dist/content.service';
   ```
   > Locate the preset repo by starting from this location: plugins/GrapesJsBuilderBundle/Assets/library/js/. In the above example we assume that the preset is one folder above Mautic
-8. Install the global depencency (make sure it is v1): `npm install parcel@1`
+7. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR from github.com/mautic/mautic as well. E.g. `gh pr checkout PR` when you are in the Mautic directory (not the preset directory).
+8. Install the global dependency (make sure it is v1): `npm install parcel@1`
 9. Install the project depencencies: `npm install`
 10.  Build the JS code of the **plugin** 'plugin-grapesjs-builder' in the dev mode (not minified): `npm run build-dev`
 11. Test the code locally. Make sure nothing is cached. Recommended way is using the incognito mode. E.g. https://mautic.ddev.site/s/emails
