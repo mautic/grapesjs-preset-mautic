@@ -133,8 +133,10 @@ $ npm run build
   ```
   > Locate the preset repo by starting from this location: plugins/GrapesJsBuilderBundle/Assets/library/js/. In the above example we assume that the preset is one folder above Mautic
 7. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR as well. E.g. `gh pr checkout PR`
-8. Build the JS code of the **plugin** 'plugin-grapesjs-builder': `npm run build`
-9. Test the code locally. Make sure nothing is cached. Recommended way is using the incognito mode. E.g. https://mautic.ddev.site/s/emails
+8. Install the global depencency (make sure it is v1): `npm install parcel@1`
+9. Install the project depencencies: `npm install`
+10. Build the JS code of the **plugin** 'plugin-grapesjs-builder': `npm run build`
+11. Test the code locally. Make sure nothing is cached. Recommended way is using the incognito mode. E.g. https://mautic.ddev.site/s/emails
 
 ## License
 
