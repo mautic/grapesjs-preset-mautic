@@ -120,7 +120,7 @@ $ npm run build
 3. Fork the repo: `gh repo fork mautic/grapesjs-preset-mautic`
 4. Clone the repo: `gh repo clone USERNAME/grapesjs-preset-mautic && gh pr checkout PRNUMBER>`
 5. Change into the plugin directory: e.g. `cd mautic/plugins/GrapesJSBuilderBundle`
-6. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR as well. E.g. `gh pr checkout PRNUMBER`
+6. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR from github.com/mautic/mautic as well. E.g. `gh pr checkout PR` when you are in the Mautic directory (not the preset directory).
 7. Change the code for the import path of the preset in `plugins/GrapesJsBuilderBundle/Assets/library/js/builder.service.js` to the local version of the preset. E.g.
   ```js
   // import grapesjsmautic from 'grapesjs-preset-mautic';
@@ -132,7 +132,6 @@ import MjmlService from '../../../../../../../grapesjs-preset-mautic/dist/mjml/m
 import ContentService from '../../../../../../../grapesjs-preset-mautic/dist/content.service';
   ```
   > Locate the preset repo by starting from this location: plugins/GrapesJsBuilderBundle/Assets/library/js/. In the above example we assume that the preset is one folder above Mautic
-7. Optional: Is the plugin code touched by this preset code change too? Checkout the correct plugin PR from github.com/mautic/mautic as well. E.g. `gh pr checkout PR` when you are in the Mautic directory (not the preset directory).
 8. Install the global dependency (make sure it is v1): `npm install parcel@1`
 9. Install the project depencencies: `npm install`
 10.  Build the JS code of the **plugin** 'plugin-grapesjs-builder' in the dev mode (not minified): `npm run build-dev`
