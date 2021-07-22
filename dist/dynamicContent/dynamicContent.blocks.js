@@ -32,6 +32,4 @@ export default class DynamicContentBlocks {
     });
   }
 
- 
-
 }
