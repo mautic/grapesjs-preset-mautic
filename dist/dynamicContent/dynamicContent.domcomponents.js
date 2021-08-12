@@ -8,29 +8,14 @@ export default class DynamicContentDomComponents {
   }
 
   addDynamicContentType() {
-    // Not sure this is still used. https://grapesjs.com/docs/modules/Components.html#define-custom-component-type
-    function isComponent(el) {
-      console.trace('we use it: isComponent has been called');
-
-      if (el.getAttribute && el.getAttribute('data-slot') === 'dynamicContent') {
-        console.warn('itistrue', el.getAttribute);
-        return {
-          type: 'dynamic-content'
-        };
-      }
-
-      console.warn('itisfalse', el.getAttribute);
-      return false;
-    }
-
     const dc = this.editor.DomComponents;
     const defaultType = dc.getType('default');
     const defaultModel = defaultType.model;
     const model = defaultModel.extend({
       defaults: { ...defaultModel.prototype.defaults,
         name: 'Dynamic Content',
-        // draggable: '[data-gjs-type=cell]',
-        // droppable: false,
+        draggable: '[data-gjs-type=cell]',
+        droppable: false,
         editable: false,
         stylable: false,
         propagate: ['droppable', 'editable'],
@@ -60,6 +45,18 @@ export default class DynamicContentDomComponents {
             }
           });
         }
+      }
+
+    }, {
+      // Dynamic Content component detection
+      isComponent(el) {
+        if (el.getAttribute && el.getAttribute('data-slot') === 'dynamicContent') {
+          return {
+            type: 'dynamic-content'
+          };
+        }
+
+        return false;
       }
 
     });
@@ -92,7 +89,6 @@ export default class DynamicContentDomComponents {
     }); // add the Dynamic Content component
 
     dc.addType('dynamic-content', {
-      isComponent,
       model,
       view
     });
