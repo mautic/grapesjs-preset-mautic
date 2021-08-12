@@ -113,7 +113,11 @@ Build the source and use js from build folder to your project
 $ npm run build
 ```
 
+### Dependencies
 
+Html needs to be `beautified` for the click tracking to work. Therefore, we can not use the built in command: `mjml-get-code` but we have to use `mjml2html` directly. 
+
+> `beautify` option is deprecated in mjml-core and only available in mjml cli.
 
 ## License
 
