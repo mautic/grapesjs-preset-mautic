@@ -1,0 +1,36 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "disha-pishavadia24",
+      "name": "Disha P",
+      "avatar_url": "https://avatars.githubusercontent.com/u/22201881?v=4",
+      "profile": "https://www.udemy.com/certificate/UC-5CZA2NJ8/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "adiux",
+      "name": "Adrian",
+      "avatar_url": "https://avatars.githubusercontent.com/u/13075514?v=4",
+      "profile": "http://www.idea2.ch",
+      "contributions": [
+        "code",
+        "doc",
+        "review",
+        "userTesting"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "grapesjs-preset-mautic",
+  "projectOwner": "mautic",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
