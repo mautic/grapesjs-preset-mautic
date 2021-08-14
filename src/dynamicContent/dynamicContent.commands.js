@@ -29,7 +29,7 @@ export default class DynamicContentCommands {
     const components = this.dcService.getDcComponents();
     components.forEach((comp) => {
       if (!this.dcService.updateComponentFromDcStore(comp)) {
-        this.logger.warning('DynamicContent component not updated', { comp });
+        this.logger.warning('DC: DynamicContent component not updated', { comp });
       }
     });
   }
@@ -50,7 +50,7 @@ export default class DynamicContentCommands {
       const decId = attributes['data-param-dec-id'];
 
       if (!decId) {
-        this.logger.debug('Expected a Dynamic Content component', { dynamicContent });
+        this.logger.debug('DC: Expected a Dynamic Content component', { dynamicContent });
         throw new Error('No Dynamic Content component');
       }
 
@@ -62,7 +62,7 @@ export default class DynamicContentCommands {
 
       // Clear id because it's reloaded by Mautic and this prevent slot to be destroyed by GrapesJs destroy event on close.
       // dynamicContent.addAttributes({ 'data-param-dec-id': '' });
-      this.logger.debug("Replaced component's content with its token", {
+      this.logger.debug("DC: Replaced component's content with its token", {
         dynamicContent,
         dynConToken,
       });
@@ -112,7 +112,7 @@ export default class DynamicContentCommands {
     const { target } = options;
     const dcComponent = target || editor.getSelected();
     if (!dcComponent) {
-      throw new Error('No dc components found');
+      throw new Error('No DC Components found');
     }
 
     const attributes = dcComponent.getAttributes();
@@ -174,7 +174,7 @@ export default class DynamicContentCommands {
       this.logger.warning('No DynamicContent store item to delete found', { dcStoreId });
     }
     dynCon.parent().remove();
-    this.logger.debug('DynamicContent store item removed', { dcStoreId });
+    this.logger.debug('DC: DynamicContent store item removed', { dcStoreId });
   }
 
   /**
