@@ -55,10 +55,10 @@ export default class DynamicContentCommands {
       const decId = attributes['data-param-dec-id'];
 
       if (!decId) {
-        this.logger.debug('Expected a dynamic content component', {
+        this.logger.debug('Expected a Dynamic Content component', {
           dynamicContent
         });
-        throw new Error('no dynamic content component');
+        throw new Error('No Dynamic Content component');
       }
 
       const dynConId = DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']);
@@ -67,7 +67,7 @@ export default class DynamicContentCommands {
       const dynConToken = `{dynamiccontent="${dynConName}"}`; // Clear id because it's reloaded by Mautic and this prevent slot to be destroyed by GrapesJs destroy event on close.
       // dynamicContent.addAttributes({ 'data-param-dec-id': '' });
 
-      this.logger.debug('Replaced components content with its token', {
+      this.logger.debug("Replaced component's content with its token", {
         dynamicContent,
         dynConToken
       });

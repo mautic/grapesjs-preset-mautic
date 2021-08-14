@@ -15,7 +15,7 @@ export default class ButtonCloseCommands {
 
   static closeEditorEmailHtml(editor) {
     if (!editor) {
-      throw new Error('no email-html editor');
+      throw new Error('No email-HTML editor');
     }
 
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens'); // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
@@ -28,7 +28,7 @@ export default class ButtonCloseCommands {
 
   static closeEditorEmailMjml(editor) {
     if (!editor) {
-      throw new Error('no email-mjml editor');
+      throw new Error('No email-MJML editor');
     }
 
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');

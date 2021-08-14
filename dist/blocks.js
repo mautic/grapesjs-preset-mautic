@@ -1,8 +1,6 @@
 import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
-
 import ContentService from './content.service';
-
-
+import ButtonBlock from './buttonBlock';
 export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
   const cfg = editor.getConfig();
@@ -11,13 +9,16 @@ export default ((editor, opts = {}) => {
   if ('grapesjsmjml' in cfg.pluginsOpts) {// Dynamic Content MJML block
   } else if ('grapesjsnewsletter' in cfg.pluginsOpts) {
     const dcb = new DynamicContentBlocks(editor, opts);
+    dcb.addDynamciContentBlock();
+  } //add button block for landing page
 
-    dcb.addDynamciContentBlock();    
-  }
 
- 
-// Add icon to mj-hero
+  const mode = ContentService.getMode(editor);
 
+  if (mode === ContentService.modePageHtml) {
+    const buttonBlock = new ButtonBlock(editor);
+    buttonBlock.addButtonBlock();
+  } // Add icon to mj-hero
 
 
   if (typeof bm.get('mj-hero') !== 'undefined') {
@@ -43,7 +44,6 @@ export default ((editor, opts = {}) => {
    * Custom block inside Sections category
    */
   // MJML columns
-
 
   if (typeof bm.get('mj-1-column') !== 'undefined') {
     bm.get('mj-1-column').set({
