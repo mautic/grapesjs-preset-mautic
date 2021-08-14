@@ -48,7 +48,7 @@ export default class MjmlService {
   static mjmlToHtml(mjml) {
     try {
       if (typeof mjml !== 'string' || !mjml.includes('<mjml>')) {
-        throw new Error('no valid mjml string');
+        throw new Error('No valid MJML string');
       }
       // html needs to be beautified for the click tracking to work.
       return mjml2html(mjml, { validationLevel: 'strict', beautify: true });

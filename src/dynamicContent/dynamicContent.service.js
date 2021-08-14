@@ -190,7 +190,7 @@ export default class DynamicContentService {
 
     // Replace token on canvas with user facing name: dcName
     component.set('content', `Dynamic Content ${decId}`);
-    this.logger.debug('Created a new dynamic content item in store', {
+    this.logger.debug('Created a new Dynamic Content item in store', {
       decId,
       component,
     });
