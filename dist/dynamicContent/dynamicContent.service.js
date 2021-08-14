@@ -36,7 +36,7 @@ export default class DynamicContentService {
     const regexEx = regex.exec(content);
 
     if (!regexEx || !regexEx[1]) {
-      this.logger.debug('No dynamic content tokens to get', {
+      this.logger.debug('DC: No dynamic content tokens to get', {
         content
       });
       return null;
@@ -45,56 +45,147 @@ export default class DynamicContentService {
     return regexEx[1];
   }
   /**
-   * Convert a text token to the default variant
-   * Wire up the ids
+   * Get dec ID from the store items identifier: e.g. #emailform_dynamicContent_1
+   * @returns integer
+   */
+
+
+  static getDecId(storeItemIdentifier) {
+    // dec id starts with 1, so we add +1
+    const decId = parseInt(storeItemIdentifier.replace(/[^0-9]/g, ''), 10) + 1;
+
+    if (decId <= 0) {
+      throw new Error('DC: no valid decId');
+    }
+
+    return decId;
+  }
+  /**
+   * Returns the decId from the component
+   * @returns integer
+   */
+
+
+  static getDataParamDecid(component) {
+    return parseInt(component.getAttributes()['data-param-dec-id'], 10) || 0;
+  }
+  /**
+   * Link the component on the canvas with the item in the HTML store
+   * If it does not exist, create a new store item
+   */
+
+
+  linkComponentToStoreItem(component) {
+    // get components data-param-dec-id (can come from token from db)
+    let decId = DynamicContentService.getDataParamDecid(component);
+
+    if (decId > 0) {
+      this.logger.debug('DC: Already wired up', {
+        decId
+      });
+      return decId;
+    } // not wired up yet - get component token id
+
+
+    const tokenName = this.getTokenName(component);
+    const tokenNr = DynamicContentService.getDecId(tokenName);
+    decId = tokenNr;
+
+    if (decId > 0) {
+      this.logger.debug('DC: Using decId from token nr', {
+        tokenName,
+        decId
+      });
+      return decId;
+    } // double check if a store item exists - if not found - create new store item
+
+
+    if (!this.getStoreItem(decId)) {
+      this.createNewStoreItem(component);
+    } // return components dec-id (also from the new one)
+
+
+    return DynamicContentService.getDataParamDecid(component);
+  }
+  /**
+   * Get the content from the Html store and put the default content on the canvas.
+   * Creates a store item (filter) in Mautic Form if new.
+   * Wires up the ids.
+   * E.g. if they are initialized from a {token}
    *
    * @param {GrapesJS Component} component
    */
 
 
-  transformDcTokenToSlot(component) {
-    this.getDcStoreItems();
-    this.getDcComponents();
-    let dcName = this.getTokenName(component);
+  updateComponentFromDcStore(component) {
+    // get the item/tab matching the dynamic content on the canvas
+    let dataParamDecId = DynamicContentService.getDataParamDecid(component);
+    let dcItem = this.getStoreItem(dataParamDecId); // Load the html store item
 
-    if (!dcName) {
-      this.logger.debug('No dynamic content tokens name', {
-        component,
-        dcName
-      });
-      return false;
-    } // if it is a new component (dropped to the canvas)
-    // give it a new id (and create a corresponding item in the html store)
+    dataParamDecId = DynamicContentService.getDataParamDecid(component);
+    dcItem = this.getStoreItem(dataParamDecId); // Update the Grapesjs component with the content from the HTML store item
 
-
-    if (dcName === 'Dynamic Content') {
-      dcName += ` ${this.dcComponents.length}`;
-    } // get the item/tab matching the dynamic content on the canvas
-
-
-    const dcItem = this.dcStoreItems.find(item => item.name === dcName); // If dynamic content item exists -> fill
-    // Hint: the first dynamic content item (tab) is created from php: #emailform_dynamicContent_0
-
-    if (dcItem) {
-      this.updateComponent(component, dcItem);
-    } else {
-      this.initNewComponent(component, dcName);
-    }
-
+    this.updateComponent(component, dcItem);
     return true;
   }
+  /**
+   * if the editors modal is closed/stopped the Components content visible
+   * on the canvas and the html store item has to be updated
+   */
+
+
+  updateDcStoreItem() {
+    // For the editing inside grapesjs the dynamcicontent popup is moved to the "grapesjs dom"
+    // so it has to be moved back to the Mautic email form for saving.
+    const modalContent = mQuery('#dynamic-content-popup'); // On modal close -> move editor within Mautic
+
+    if (!modalContent) {
+      throw new Error('DC: No dynamic content popup found');
+    }
+
+    const dynamicContentContainer = mQuery('#dynamicContentContainer');
+    const content = mQuery(modalContent).contents().first();
+    dynamicContentContainer.append(content);
+    modalContent.detach(); // remove the modal
+
+    this.logger.debug('DC: store item updated', {
+      id: content.attr('id')
+    });
+  }
+  /**
+   * Get a dynamic content item from its html store
+   */
+
+
+  getStoreItem(decId) {
+    // get all items
+    this.getDcStoreItems();
+    const item = this.dcStoreItems.find(itm => itm.decId === decId);
+    return item;
+  }
+  /**
+   * Set the html/content of the visible component on the canvas
+   */
+
 
   updateComponent(component, dcItem) {
-    this.logger.debug('Using existing dynamic content item', {
+    if (!component || !dcItem) {
+      throw new Error('No component or dynamic content item');
+    }
+
+    this.logger.debug('DC: Updating DC component with values from store', {
       dcItem
     }); // Update the component on the canvas with new values from the html store
+    // and link it  with the id to the html store
+    // needed for new components
 
     component.addAttributes({
-      'data-param-dec-id': dcItem.id
+      'data-param-dec-id': dcItem.decId
     });
     component.set('content', dcItem.content);
-    return component; // let dynConContent = '';
-    // if (dcItem.id) {
+    return component; // gets the default content to be displayed on the canvas. Should have been replaced by the `dcItem.content`
+    // let dynConContent = '';
+    // if (dcItem.decId) {
     //   const dynConContainer = mQuery(dcTarget.htmlId).find(dcTarget.content);
     //   // is there content in the current editor?
     //   if (dynConContainer.hasClass('editor')) {
@@ -113,16 +204,16 @@ export default class DynamicContentService {
    */
 
 
-  initNewComponent(component, dcName) {
-    const dcTarget = Mautic.createNewDynamicContentItem(mQuery); // get ID from newly generated store item: e.g. #emailform_dynamicContent_1
-
+  createNewStoreItem(component) {
+    const storeItemIdentifier = Mautic.createNewDynamicContentItem(mQuery);
+    const decId = DynamicContentService.getDecId(storeItemIdentifier);
     component.addAttributes({
-      'data-param-dec-id': parseInt(dcTarget.replace(/[^0-9]/g, ''), 10)
+      'data-param-dec-id': decId
     }); // Replace token on canvas with user facing name: dcName
 
-    component.set('content', dcName);
-    this.logger.debug('Created a new dynamic content item', {
-      dcName,
+    component.set('content', `Dynamic Content ${decId}`);
+    this.logger.debug('DC: Created a new Dynamic Content item in store', {
+      decId,
       component
     });
     return component;
@@ -130,6 +221,8 @@ export default class DynamicContentService {
   /**
    * Extract the dynamic content index and the html id from a string:
    * e.g. href from dcTarget
+   * decId = the readable number in the token. Starts with 1
+   * htmlId = the html store item Id. It stars with 0
    *
    * @param {string} identifier e.g. http://localhost:1234/#emailform_dynamicContent_1
    */
@@ -146,8 +239,8 @@ export default class DynamicContentService {
     return {
       htmlId: `${result[1]}${result[2]}`,
       // #emailform_dynamicContent_1
-      decId: parseInt(result[2], 10),
-      // 1
+      decId: parseInt(result[2], 10) + 1,
+      // 2
       content: `${result[1]}${result[2]}_content` // #emailform_dynamicContent_1_content
 
     };
@@ -175,7 +268,7 @@ export default class DynamicContentService {
 
 
   static getDcName(target) {
-    return `Dynamic Content ${target.decId + 1}`;
+    return `Dynamic Content ${target.decId}`;
   }
   /**
    * Get the default content
@@ -201,8 +294,8 @@ export default class DynamicContentService {
       this.dcStoreItems.push({
         identifier: value.id,
         // emailform_dynamicContent_0
-        id: dcTarget.decId,
-        // 0
+        decId: dcTarget.decId,
+        // 1
         name: DynamicContentService.getDcName(dcTarget),
         // Dynamic Content 1
         content: DynamicContentService.getDcContent(dcTarget) // Default Dynamic Content

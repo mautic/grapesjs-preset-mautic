@@ -1,5 +1,6 @@
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import Logger from './logger';
 export default class ContentService {
   static isMjmlMode(editor) {
     if (!editor) {
@@ -28,7 +29,8 @@ export default class ContentService {
 
 
   static getCanvasAsHtmlDocument(editor) {
-    const parser = new DOMParser(); // get original doctype, header and add it to the html
+    const parser = new DOMParser();
+    const logger = new Logger(editor); // get original doctype, header and add it to the html
 
     const originalContent = ContentService.getOriginalContentHtml();
     const doctype = ContentService.serializeDoctype(originalContent.doctype);
@@ -38,6 +40,9 @@ export default class ContentService {
     const htmlDocument = parser.parseFromString(htmlCombined, 'text/html'); // if no header is set on the canvas, replace it with existing from theme
 
     if (!htmlDocument.head.innerHTML && originalContent.head.innerHTML) {
+      logger.debug('Set head based on the original content', {
+        head: originalContent.head.innerHTML
+      });
       htmlDocument.head.innerHTML = originalContent.head.innerHTML;
     }
 

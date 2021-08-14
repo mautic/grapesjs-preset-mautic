@@ -5,19 +5,22 @@ export default (editor => {
 
   editor.Commands.add('preset-mautic:dynamic-content-open', {
     run: (edtr, sender, options = {}) => {
-      // dynamicContentCmd.convertDynamicContentTokensToSlots();
-      dynamicContentCmd.launchDynamicContentPopup(edtr, sender, options);
+      dynamicContentCmd.showDynamicContentPopup(edtr, sender, options);
     },
-    stop: edtr => dynamicContentCmd.stopDynamicContentPopup(edtr)
-  }); // Slot to {token}
+    stop: () => dynamicContentCmd.stopDynamicContentPopup()
+  }); // Component to {token}
 
-  editor.Commands.add('preset-mautic:dynamic-content-slots-to-tokens', {
-    run: edtr => dynamicContentCmd.convertDynamicContentSlotsToTokens(edtr)
-  }); // {token} to slot
+  editor.Commands.add('preset-mautic:dynamic-content-components-to-tokens', {
+    run: edtr => dynamicContentCmd.convertDynamicContentComponentsToTokens(edtr)
+  }); // Link store to Compoennt
 
-  editor.Commands.add('preset-mautic:dynamic-content-tokens-to-slots', {
-    run: () => dynamicContentCmd.convertDynamicContentTokensToSlots()
-  }); // delte store item
+  editor.Commands.add('preset-mautic:link-component-to-store-item', {
+    run: (edtr, sender, options) => dynamicContentCmd.linkComponentToStoreItem(edtr, sender, options)
+  }); // Fill the Component with values.
+
+  editor.Commands.add('preset-mautic:update-dc-components-from-dc-store', {
+    run: () => dynamicContentCmd.updateComponentsFromDcStore()
+  }); // Delete store item
 
   editor.Commands.add('preset-mautic:dynamic-content-delete-store-item', {
     run: (edtr, sender, options) => dynamicContentCmd.deleteDynamicContentStoreItem(edtr, sender, options)

@@ -1,14 +1,13 @@
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+import DynamicContentService from './dynamicContent.service';
 export default class DynamicContentDomComponents {
-  constructor(editor) {
-    _defineProperty(this, "editor", void 0);
-
-    this.editor = editor;
+  constructor() {
+    _defineProperty(this, "dcService", void 0);
   }
 
-  addDynamicContentType() {
-    const dc = this.editor.DomComponents;
+  static addDynamicContentType(editor) {
+    const dc = editor.DomComponents;
     const defaultType = dc.getType('default');
     const defaultModel = defaultType.model;
     const model = defaultModel.extend({
@@ -32,7 +31,11 @@ export default class DynamicContentDomComponents {
        * Initilize the component
        */
       init() {
-        // Add toolbar edit button if it's not already in
+        // link component to the corresponding html store item
+        this.em.get('Commands').run('preset-mautic:link-component-to-store-item', {
+          component: this
+        }); // Add toolbar edit button if it's not already in
+
         const toolbar = this.get('toolbar');
         const id = 'toolbar-dynamic-content';
 
@@ -45,7 +48,15 @@ export default class DynamicContentDomComponents {
             }
           });
         }
-      }
+      } // @todo: show the store items default content on the canvas
+      // updated(property, value, prevValue) {
+      //   console.log('Local hook: model.updated', {
+      //     property,
+      //     value,
+      //     prevValue,
+      //   });
+      // },
+
 
     }, {
       // Dynamic Content component detection
@@ -68,11 +79,19 @@ export default class DynamicContentDomComponents {
         dblclick: 'onActive'
       },
 
-      // maybe use onRender for token to slot conversion
+      // replace token with human readable view
+      onRender(el) {
+        const dcService = new DynamicContentService(editor);
+        const decId = DynamicContentService.getDataParamDecid(el.model);
+        const dcItem = dcService.getStoreItem(decId);
+        this.el.innerHTML = dcItem.content;
+        dcService.logger.debug('DC: Updated view', dcItem);
+      },
+
       // open the dynamic content modal if the editor is added or double clicked
       onActive() {
-        const target = this.model;
-        this.em.get('Commands').run('preset-mautic:dynamic-content-tokens-to-slots');
+        const target = this.model; // open the editor in the popup
+
         this.em.get('Commands').run('preset-mautic:dynamic-content-open', {
           target
         });
