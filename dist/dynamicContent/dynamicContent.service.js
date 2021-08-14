@@ -36,7 +36,7 @@ export default class DynamicContentService {
     const regexEx = regex.exec(content);
 
     if (!regexEx || !regexEx[1]) {
-      this.logger.debug('No dynamic content tokens to get', {
+      this.logger.debug('DC: No dynamic content tokens to get', {
         content
       });
       return null;
@@ -173,7 +173,7 @@ export default class DynamicContentService {
       throw new Error('No component or dynamic content item');
     }
 
-    this.logger.debug('Updating DC component with values from store', {
+    this.logger.debug('DC: Updating DC component with values from store', {
       dcItem
     }); // Update the component on the canvas with new values from the html store
     // and link it  with the id to the html store
@@ -212,7 +212,7 @@ export default class DynamicContentService {
     }); // Replace token on canvas with user facing name: dcName
 
     component.set('content', `Dynamic Content ${decId}`);
-    this.logger.debug('Created a new Dynamic Content item in store', {
+    this.logger.debug('DC: Created a new Dynamic Content item in store', {
       decId,
       component
     });
