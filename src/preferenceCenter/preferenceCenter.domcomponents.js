@@ -134,5 +134,106 @@ export default class PreferenceCenterDomComponents {
         },
       },
     });
+
+    const domc = this.editor.DomComponents;
+    const defaultType = domc.getType('default');
+    const defaultModel = defaultType.model;
+    const defaultView = defaultType.view;
+
+    dc.addType('date', {
+      model: defaultModel.extend(
+        {
+          defaults: {
+            ...defaultModel.prototype.defaults,
+            'custom-name': 'date',
+            tagName: 'input',
+            type: 'date',
+            attributes: {
+              'data-gjs-type': 'date',
+              'data-slot': 'date',
+            },
+            droppable: false, // Can't drop other elements inside
+            copyable: false, // Do not allow to duplicate the component
+            script: function () {
+              var input = this;
+              var initDateRange = function () {
+                var input = this;
+                const options = {
+                  singleDatePicker: true,
+                  showDropdowns: true,
+                };
+                $(input).daterangepicker(options);
+              };
+
+              if (
+                typeof daterangepicker == 'undefined' ||
+                typeof jQuery == 'undefined' ||
+                typeof moment == 'undefined'
+              ) {
+                if (typeof jQuery == 'undefined') {
+                  var jquery = document.createElement('script');
+                  jquery.src =
+                    '//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+                  document.body.appendChild(jquery);
+
+                  jquery.onload = function () {
+                    loadMoment();
+                  };
+                } else {
+                  loadMoment();
+                }
+                function loadMoment() {
+                  if (typeof moment == 'undefined') {
+                    var moment = document.createElement('script');
+                    moment.src =
+                      '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
+                    document.body.appendChild(moment);
+
+                    moment.onload = function () {
+                      loadDatePicker();
+                    };
+                  } else {
+                    loadDatePicker();
+                  }
+                }
+                function loadDatePicker() {
+                  if (typeof $ == 'undefined') {
+                    window.$ = jQuery;
+                  }
+                  var link = document.createElement('link');
+                  link.rel = 'stylesheet';
+                  link.href =
+                    '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.css';
+                  document.body.appendChild(link);
+
+                  var daterangepicker = document.createElement('script');
+                  daterangepicker.src =
+                    '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js';
+                  document.body.appendChild(daterangepicker);
+
+                  daterangepicker.onload = initDateRange;
+                }
+              } else {
+                initDateRange();
+              }
+            },
+          },
+        },
+        {
+          isComponent(el) {
+            var dateType;
+            if (el.getAttribute && el.getAttribute('data-slot') === 'date') {
+              dateType = true;
+            } else {
+              dateType = false;
+            }
+            if (el.tagName == 'INPUT' && dateType) {
+              return { type: 'date' };
+            }
+          },
+        }
+      ),
+      view: defaultView,
+    });
   }
 }

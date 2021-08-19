@@ -30,7 +30,7 @@ export default class PreferenceCenterBlocks {
           },
         ],
       },
-      style: { padding: '10px' },
+      style: { padding: '50px' },
     });
 
     //add my segment list
@@ -58,7 +58,7 @@ export default class PreferenceCenterBlocks {
           },
         ],
       },
-      style: { padding: '10px' },
+      style: { padding: '50px' },
     });
 
     //add preffered channel
@@ -82,7 +82,7 @@ export default class PreferenceCenterBlocks {
           },
         ],
       },
-      style: { padding: '10px' },
+      style: { padding: '50px' },
     });
 
     //add text success message block
@@ -101,7 +101,7 @@ export default class PreferenceCenterBlocks {
           },
         ],
       },
-      style: { padding: '10px' },
+      style: { padding: '50px' },
     });
 
     //add channel frequency block
@@ -137,14 +137,14 @@ export default class PreferenceCenterBlocks {
           {
             components: [
               { type: 'label', components: 'Pause from' },
-              { type: 'input' },
+              { type: 'date' },
               { type: 'label', components: 'to' },
-              { type: 'input' },
+              { type: 'date' },
             ],
           },
         ],
       },
-      style: { padding: '10px' },
+      style: { padding: '50px' },
     });
 
     // add save preference button
