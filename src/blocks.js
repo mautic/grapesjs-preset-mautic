@@ -22,8 +22,9 @@ export default (editor, opts = {}) => {
     const buttonBlock = new ButtonBlock(editor);
     buttonBlock.addButtonBlock();
 
-    //check if page is for preference center
-    if (mQuery('#page_isPreferenceCenter_1').is(':checked')) {
+    //check if page is for preference center    
+    const isPreferenceCenter = ContentService.isPreferenceCenter();
+    if(isPreferenceCenter) { 
       const pcb = new PreferenceCenterBlocks(editor);
       pcb.addPreferenceCenterBlock();
     }

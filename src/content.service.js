@@ -27,6 +27,14 @@ export default class ContentService {
   }
 
   /**
+   * Check if preference center switch is on
+   * @returns boolean
+   */
+  static isPreferenceCenter(){
+    return mQuery('#page_isPreferenceCenter_1').is(':checked');
+  }
+
+  /**
    * Get the current Canvas content as complete HTML document:
    * Combine original doctype, header, editor styles and content
    *
