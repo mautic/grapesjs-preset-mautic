@@ -38,7 +38,10 @@ export default class MjmlService {
 
 
   static getEditorMjmlContent(editor) {
-    return editor.getHtml().trim();
+    // cleanId: Remove unnecessary IDs (eg. those created automatically)
+    return editor.getHtml({
+      cleanId: true
+    }).trim();
   }
   /**
    * Transform MJML to HTML
@@ -50,12 +53,11 @@ export default class MjmlService {
   static mjmlToHtml(mjml) {
     try {
       if (typeof mjml !== 'string' || !mjml.includes('<mjml>')) {
-        throw new Error('No valid MJML string');
+        throw new Error('No valid MJML provided');
       } // html needs to be beautified for the click tracking to work.
 
 
       return mjml2html(mjml, {
-        validationLevel: 'strict',
         beautify: true
       });
     } catch (error) {
