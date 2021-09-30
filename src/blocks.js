@@ -16,6 +16,7 @@ export default (editor, opts = {}) => {
     dcb.addDynamciContentBlock();
   }
 
+
   const mode = ContentService.getMode(editor);
   if (mode === ContentService.modePageHtml) {
     //add button block for landing page

@@ -14,33 +14,39 @@ export default class DynamicContentCommands {
 
     this.dcService = new DynamicContentService(editor);
     this.logger = new Logger(editor);
-  }
-
-  launchDynamicContentPopup(editor, sender, options) {
-    // Transform DC slots to token
-    // editor.runCommand('preset-mautic:dynamic-content-slots-to-tokens');
-    this.showDynamicContentEditor(editor, options);
   } // eslint-disable-next-line class-methods-use-this
 
 
-  stopDynamicContentPopup(editor) {
-    editor.runCommand('preset-mautic:dynamic-content-tokens-to-slots');
+  stopDynamicContentPopup() {
+    // Destroy Dynamic Content editors and write the contents to the textarea
+    for (const name of Object.keys(CKEDITOR.instances)) {
+      if (name.includes('dynamicContent')) {
+        this.logger.debug(`Destroying Dynamic Content editor: ${name}`);
+        CKEDITOR.instances[name].destroy(false);
+      }
+    }
+
+    this.dcService.updateDcStoreItem();
   }
   /**
-   * Convert all dynamic content tokens on the canvas to
-   * human readable texts/slots/component.
-   * {dynamiccontent} => Dynamic Content
+   * Update and wire all dynamic content components on the canvas to
+   * human readable texts/slots/components.
+   * E.g. if they are initialized from a {token}
    */
 
 
-  convertDynamicContentTokensToSlots() {
+  updateComponentsFromDcStore() {
     const components = this.dcService.getDcComponents();
     components.forEach(comp => {
-      this.dcService.transformDcTokenToSlot(comp);
+      if (!this.dcService.updateComponentFromDcStore(comp)) {
+        this.logger.warning('DC: DynamicContent component not updated', {
+          comp
+        });
+      }
     });
   }
   /**
-   * Convert dynamic content slots to tokens
+   * Convert dynamic content components to tokens
    * Dynamic Content => {dynamicContent}
    *
    * @param editor
@@ -49,40 +55,61 @@ export default class DynamicContentCommands {
   // eslint-disable-next-line class-methods-use-this
 
 
-  convertDynamicContentSlotsToTokens(editor) {
+  convertDynamicContentComponentsToTokens(editor) {
     // get all dynamic content elements loaded in the editor
     const dynamicContents = editor.DomComponents.getWrapper().find('[data-slot="dynamicContent"]');
     dynamicContents.forEach(dynamicContent => {
       const attributes = dynamicContent.getAttributes();
-      const decId = attributes['data-param-dec-id']; // If it's not a token -> convert to token
+      const decId = attributes['data-param-dec-id'];
 
-      if (decId >= 0) {
-        const dynConId = DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']);
-        const dynConTarget = mQuery(dynConId);
-        const dynConName = dynConTarget.find(`${dynConId}_tokenName`).val();
-        const dynConToken = `{dynamiccontent="${dynConName}"}`; // Clear id because it's reloaded by Mautic and this prevent slot to be destroyed by GrapesJs destroy event on close.
-        // dynamicContent.addAttributes({ 'data-param-dec-id': '' });
-
-        dynamicContent.set('content', dynConToken);
+      if (!decId) {
+        this.logger.debug('DC: Expected a Dynamic Content component', {
+          dynamicContent
+        });
+        throw new Error('No Dynamic Content component');
       }
+
+      const dynConId = DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']);
+      const dynConTarget = mQuery(dynConId);
+      const dynConName = dynConTarget.find(`${dynConId}_tokenName`).val();
+      const dynConToken = `{dynamiccontent="${dynConName}"}`; // Clear id because it's reloaded by Mautic and this prevent slot to be destroyed by GrapesJs destroy event on close.
+      // dynamicContent.addAttributes({ 'data-param-dec-id': '' });
+
+      this.logger.debug("DC: Replaced component's content with its token", {
+        dynamicContent,
+        dynConToken
+      });
+      dynamicContent.set('content', dynConToken);
     });
     return dynamicContents.length;
   }
   /**
    * Build and display the Dynamic Content editor popup/modal window.
+   * Hint: the passed in editor is the main grapesjs editor.
+   *
    * @param {Model} component The current grapesjs component
    */
   // eslint-disable-next-line class-methods-use-this
 
 
-  showDynamicContentEditor(editor, options) {
+  showDynamicContentPopup(editor, sender, options) {
     this.dcPopup = DynamicContentCommands.buildDynamicContentPopup();
     this.addDynamicContentEditor(editor, options);
     const title = Mautic.translate('grapesjsbuilder.dynamicContentBlockLabel');
     const modal = editor.Modal;
     modal.setTitle(title);
     editor.Modal.setContent(this.dcPopup);
-    modal.open();
+    modal.open(); // Set up dynamic content editors if present
+
+    Mautic.setDynamicContentEditors(Mautic.getBuilderContainer()); // When a new Dynamic Content filter (tab) is added, we want to turn the editor into CKEditor.
+
+    Mautic.dynamicContentAddNewFilterListener(textarea => {
+      Mautic.ConvertFieldToCkeditor(textarea, {});
+    }); // When a new Dynamic Content item (slot) is added, we want to turn the editor into CKEditor.
+
+    Mautic.dynamicContentAddNewItemListener(textarea => {
+      Mautic.ConvertFieldToCkeditor(textarea, {});
+    });
     modal.onceClose(() => editor.stopCommand('preset-mautic:dynamic-content-open'));
   }
   /**
@@ -92,10 +119,9 @@ export default class DynamicContentCommands {
 
 
   static buildDynamicContentPopup() {
-    const content = document.createElement('div');
-    content.setAttribute('id', 'dynamic-content-popup');
-    const codePopup = document.createElement('div');
-    codePopup.appendChild(content);
+    const codePopup = document.createElement('div'); // codePopup.setAttribute('id', 'codePopup');
+
+    codePopup.setAttribute('id', 'dynamic-content-popup');
     return codePopup;
   }
   /**
@@ -110,7 +136,7 @@ export default class DynamicContentCommands {
     const dcComponent = target || editor.getSelected();
 
     if (!dcComponent) {
-      throw new Error('No dc components found');
+      throw new Error('No DC Components found');
     }
 
     const attributes = dcComponent.getAttributes(); // const popupContent = dcPopup.querySelector('#dynamic-content-popup');
@@ -119,18 +145,26 @@ export default class DynamicContentCommands {
     // console.warn({ popupContent });
     // get the dynamic content editor
 
-    const focusForm = mQuery(DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']));
+    const dcEditor = mQuery(DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']));
 
-    if (focusForm.length <= 0) {
-      throw new Error(`No dynamicContent email form found for '${attributes['data-param-dec-id']}'`);
+    if (dcEditor.length <= 0) {
+      throw new Error(`No Dynamic Content editor found for decId: '${attributes['data-param-dec-id']}'`);
     } // Show if hidden
 
 
-    focusForm.removeClass('fade'); // Hide delete default button
+    dcEditor.removeClass('fade'); // Hide delete default button
 
-    focusForm.find('.tab-pane:first').find('.remove-item').hide(); // Insert inside popup
+    dcEditor.find('.tab-pane:first').find('.remove-item').hide(); // Clean existing editor
 
-    mQuery(this.dcPopup).empty().append(focusForm.detach());
+    mQuery(this.dcPopup).empty(); // Insert inside popup
+
+    mQuery(this.dcPopup).append(dcEditor.detach());
+  }
+
+  linkComponentToStoreItem(edtr, sender, options) {
+    // Add a new DC HTML store item, if it doesnt exist.
+    // Hint: the first dynamic content item (tab) is created from php: #emailform_dynamicContent_0
+    this.dcService.linkComponentToStoreItem(options.component);
   }
   /**
    * Delete DynamicContent on Mautic side
@@ -171,19 +205,22 @@ export default class DynamicContentCommands {
     }
 
     dynCon.parent().remove();
-    this.logger.debug('DynamicContent store item removed', {
+    this.logger.debug('DC: DynamicContent store item removed', {
       dcStoreId
     });
   }
   /**
    * Get the DynamicContent identifier of the html store item
+   * based on the token nr (decId)
    * e.g. emailform_dynamicContent_0
-   * @param {integer} id
+   * @param {integer} decId
    * @returns string
    */
 
 
-  static getDcStoreId(id) {
+  static getDcStoreId(decId) {
+    const id = decId - 1;
+
     if (id < 0) {
       throw new Error('no dynamic content ID');
     }

@@ -18,10 +18,14 @@ export default class MjmlService {
   static getEditorHtmlContent(editor) {
     // Try catch for mjml parser error
     try {
-      const code = editor.runCommand('mjml-get-code');
+      // html needs to be beautified for the click tracking to work. Therefore, we can
+      // not use the built in command: mjml-get-code
+      const mjml = this.getEditorMjmlContent(editor);
+      const code = this.mjmlToHtml(mjml);
+
       return code.html ? code.html.trim() : null;
     } catch (error) {
-      console.log(error.message);
+      console.warn(error.message);
       alert('Errors inside your template. Template will not be saved.');
     }
     return null;
@@ -33,7 +37,8 @@ export default class MjmlService {
    * @returns string
    */
   static getEditorMjmlContent(editor) {
-    return editor.getHtml().trim();
+    // cleanId: Remove unnecessary IDs (eg. those created automatically)
+    return editor.getHtml({ cleanId: true }).trim();
   }
 
   /**
@@ -43,12 +48,13 @@ export default class MjmlService {
    */
   static mjmlToHtml(mjml) {
     try {
-      if (typeof mjml !== 'string') {
-        throw new Error('no valid mjml string');
+      if (typeof mjml !== 'string' || !mjml.includes('<mjml>')) {
+        throw new Error('No valid MJML provided');
       }
-      return mjml2html(mjml, { validationLevel: 'strict' });
+      // html needs to be beautified for the click tracking to work.
+      return mjml2html(mjml, { beautify: true });
     } catch (error) {
-      console.log(error);
+      console.warn(error);
       return null;
     }
   }

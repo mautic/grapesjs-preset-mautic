@@ -29,6 +29,7 @@ export default ((editor, opts = {}) => {
     }
   }
 
+
   // Add icon to mj-hero
   if (typeof bm.get('mj-hero') !== 'undefined') {
     bm.get('mj-hero').set({
