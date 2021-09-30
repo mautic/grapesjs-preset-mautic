@@ -52,13 +52,7 @@ export default class PreferenceCenterDomComponents {
           defaults: {
             copyable: !1,
             attributes: { type: 'checkbox' },
-            traits: [
-              idTrait,
-              nameTrait,
-              valueTrait,
-              requiredTrait,
-              checkedTrait,
-            ],
+            traits: [idTrait, nameTrait, valueTrait, requiredTrait, checkedTrait],
           },
         },
         view: {
@@ -68,11 +62,7 @@ export default class PreferenceCenterDomComponents {
             },
           },
           init: function () {
-            this.listenTo(
-              this.model,
-              'change:attributes:checked',
-              this.handleChecked
-            );
+            this.listenTo(this.model, 'change:attributes:checked', this.handleChecked);
           },
           handleChecked: function () {
             this.el.checked = !!this.model.get('attributes').checked;
@@ -172,8 +162,7 @@ export default class PreferenceCenterDomComponents {
               ) {
                 if (typeof jQuery == 'undefined') {
                   var jquery = document.createElement('script');
-                  jquery.src =
-                    '//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+                  jquery.src = '//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js';
                   document.body.appendChild(jquery);
 
                   jquery.onload = function () {
@@ -185,8 +174,7 @@ export default class PreferenceCenterDomComponents {
                 function loadMoment() {
                   if (typeof moment == 'undefined') {
                     var moment = document.createElement('script');
-                    moment.src =
-                      '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
+                    moment.src = '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
                     document.body.appendChild(moment);
 
                     moment.onload = function () {
@@ -214,6 +202,7 @@ export default class PreferenceCenterDomComponents {
                   daterangepicker.onload = initDateRange;
                 }
               } else {
+                // console.log("all libs present");
                 initDateRange();
               }
             },

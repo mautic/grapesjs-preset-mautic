@@ -8,108 +8,276 @@ export default class PreferenceCenterDomComponents {
   }
 
   addPreferenceCenterType() {
-    // Not sure this is still used. https://grapesjs.com/docs/modules/Components.html#define-custom-component-type
-    function isComponent(el) {
-      console.trace('we use it: isComponent has been called');
+    const idTrait = {
+      name: 'id',
+    };
+    const nameTrait = {
+      name: 'name',
+    };
+    const valueTrait = {
+      name: 'value',
+    };
 
-      if (el.getAttribute && el.getAttribute('data-slot') === 'preferenceCenter') {
-        console.warn('itistrue', el.getAttribute);
-        return {
-          type: 'preference-center'
-        };
-      }
+    const requiredTrait = {
+      type: 'checkbox',
+      name: 'required',
+    };
 
-      console.warn('itisfalse', el.getAttribute);
-      return false;
-    }
-
+    const checkedTrait = {
+      type: 'checkbox',
+      name: 'checked',
+    };
     const dc = this.editor.DomComponents;
-    const defaultType = dc.getType('default');
-    const defaultModel = defaultType.model;
-    const model = defaultModel.extend({
-      defaults: { ...defaultModel.prototype.defaults,
-        name: 'Preference Center',
-        // draggable: '[data-gjs-type=cell]',
-        // droppable: false,
-        editable: false,
-        stylable: false,
-        propagate: ['droppable', 'editable'],
-        attributes: {
-          // Default attributes
-          'data-gjs-type': 'preference-center',
-          // Type for GrapesJS
-          'data-slot': 'preferenceCenter' // Retro compatibility with old template
-
-        }
+    dc.addType('input', {
+      isComponent: function (e) {
+        return 'INPUT' == e.tagName;
       },
-
-      /**
-       * Initilize the component
-       */
-      init() {
-        // Add toolbar edit button if it's not already in
-        const toolbar = this.get('toolbar');
-        const id = 'toolbar-preference-center';
-
-        if (!toolbar.filter(tlb => tlb.id === id).length) {
-          toolbar.unshift({
-            id,
-            command: 'preset-mautic:preference-center-open',
-            attributes: {
-              class: 'fa fa-pencil-square-o'
-            }
-          });
-        }
-      }
-
-    });
-    const view = defaultType.view.extend({
-      attributes: {
-        style: 'pointer-events: all; display: table; width: 100%;user-select: none;'
-      },
-      events: {
-        dblclick: 'onActive'
-      },
-
-      // maybe use onRender for token to slot conversion
-      // open the preference center modal if the editor is added or double clicked
-      onActive() {
-        const target = this.model;
-        this.em.get('Commands').run('preset-mautic:preference-center-tokens-to-slots');
-        this.em.get('Commands').run('preset-mautic:preference-center-open', {
-          target
-        });
-      } // does not work: gets removed when Sorting (by grapesjs)
-      // removed() {
-      //   // Delete preference-center on Mautic side
-      //   const component = this.model;
-      //   this.em
-      //     .get('Commands')
-      //     .run('preset-mautic:preference-center-delete-store-item', { component });
-      // },
-
-
-    }); // add the Preference Center component
-
-    dc.addType('preference-center', {
-      isComponent,
-      model,
-      view
-    });
-
-    dc.addType('success-msg', {
-      extend: 'text',
-      isComponent: el => el.tagName == 'Text',
-  
       model: {
         defaults: {
-          components: 'Text',
-          editable: true,         
-          type: 'text',
-          content: 'Hello world!!!'  
+          tagName: 'input',
+          attributes: { type: 'text' },
+        },
+      },
+      extendFnView: ['updateAttributes'],
+      view: {
+        updateAttributes: function () {
+          this.el.setAttribute('autocomplete', 'off');
+        },
+      },
+    }),
+      dc.addType('checkbox', {
+        extend: 'input',
+        isComponent: function (e) {
+          return 'INPUT' == e.tagName && 'checkbox' == e.type;
+        },
+        model: {
+          defaults: {
+            copyable: !1,
+            attributes: { type: 'checkbox' },
+            traits: [
+              idTrait,
+              nameTrait,
+              valueTrait,
+              requiredTrait,
+              checkedTrait,
+            ],
+          },
+        },
+        view: {
+          events: {
+            click: function (e) {
+              return e.preventDefault();
+            },
+          },
+          init: function () {
+            this.listenTo(
+              this.model,
+              'change:attributes:checked',
+              this.handleChecked
+            );
+          },
+          handleChecked: function () {
+            this.el.checked = !!this.model.get('attributes').checked;
+          },
+        },
+      }),
+      dc.addType('label', {
+        extend: 'text',
+        isComponent: function (e) {
+          return 'LABEL' == e.tagName;
+        },
+        model: { defaults: { tagName: 'label', components: 'Label' } },
+      });
+    dc.addType('option', {
+      isComponent: (el) => el.tagName == 'OPTION',
+
+      model: {
+        defaults: {
+          tagName: 'option',
+          layerable: false,
+          droppable: false,
+          draggable: false,
+          highlightable: false,
         },
       },
     });
+
+    const createOption = (value, name) => ({
+      type: 'option',
+      components: name,
+      attributes: { value },
+    });
+
+    dc.addType('select', {
+      extend: 'input',
+      isComponent: (el) => el.tagName == 'SELECT',
+
+      model: {
+        defaults: {
+          tagName: 'select',
+          components: [
+            createOption('email', 'Email'),
+            //createOption('opt2', 'Option 2'),
+          ],
+          traits: [
+            nameTrait,
+            {
+              name: 'options',
+              type: 'select-options',
+            },
+            requiredTrait,
+          ],
+        },
+      },
+
+      view: {
+        events: {
+          mousedown: (e) => e.preventDefault(),
+        },
+      },
+    });
+    // function gatherDateOptions() {
+    //   var customDateFieldInputs = c.customDateFields.split(',');
+    //   var customDateRangeInputs = c.customDateRangeFields.split(',');
+    //   var customDatetimeInputs = c.customDatetimeFields.split(',');
+    //   var customDatetimeRangeInputs = c.customDatetimeRangeFields.split(',');
+    
+    //   const dateInputsOptions = []
+    
+    //   // Add date fields
+    //   if (c.customDateFields.length){
+    //     $.each(customDateFieldInputs, function( index, field ) {
+    //       dateInputsOptions.push({
+    //         value: field + " - Date", name: field + " - Date"
+    //       })
+    //     });
+    //   }
+    //   // Add dateRange fields
+    //   if (c.customDateRangeFields.length){
+    //     $.each(customDateRangeInputs, function( index, field ) {
+    //       dateInputsOptions.push({
+    //         value: field + " - Date Range", name: field + " - Date Range"
+    //       })
+    //     });
+    //   }
+    //   // Add datetime fields
+    //   if (c.customDatetimeFields.length){
+    //     $.each(customDatetimeInputs, function( index, field ) {
+    //       dateInputsOptions.push({
+    //         value: field + " - Datetime", name: field + " - Datetime"
+    //       })
+    //     });
+    //   }
+    //   // Add datetimeRange fields
+    //   if (c.customDatetimeRangeFields.length){
+    //     $.each(customDatetimeRangeInputs, function( index, field ) {
+    //       dateInputsOptions.push({
+    //         value: field + " - Datetime Range", name: field + " - Datetime Range"
+    //       })
+    //     });
+    //   }
+    
+    //   return dateInputsOptions;
+    // }
+    //let dateInputsOptions = gatherDateOptions();
+    const domc = this.editor.DomComponents;
+    const defaultType = domc.getType('default');
+    const defaultModel = defaultType.model;
+    const defaultView = defaultType.view;
+    dc.addType('date', {
+      model: defaultModel.extend({
+        defaults: {
+          ...defaultModel.prototype.defaults,
+          'custom-name': 'date',
+          tagName: 'input',
+          type: 'date',
+          attributes: {
+            'data-gjs-type': 'date',
+            'data-slot': 'date'
+  
+          },
+          droppable: false, // Can't drop other elements inside
+          copyable: false, // Do not allow to duplicate the component
+          script: function () {
+            var input = this;
+            // console.log("Working input", input);
+            var initDateRange = function() {
+              var input = this;
+              const options = {
+                singleDatePicker: true,
+                showDropdowns: true,
+              }
+              $(input).daterangepicker(options);
+            }    
+            if (typeof daterangepicker == 'undefined' || typeof jQuery == 'undefined' || typeof moment == 'undefined') {
+    
+              if (typeof jQuery == 'undefined'){
+                var jquery = document.createElement('script');
+                jquery.src = '//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js';
+                document.body.appendChild(jquery);
+    
+                jquery.onload = function(){
+                  loadMoment();
+                }
+              } else {
+                loadMoment();
+              }
+              function loadMoment(){
+                if (typeof moment == 'undefined'){
+                  var moment = document.createElement('script');
+                  moment.src = '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
+                  document.body.appendChild(moment);
+    
+                  moment.onload = function(){
+                    loadDatePicker();
+                  }
+                } else {
+                  loadDatePicker();
+                }
+              }
+              function loadDatePicker(){
+                if (typeof $ == 'undefined'){window.$ = jQuery};
+                var link = document.createElement('link');
+                link.rel = "stylesheet";
+                link.href = "//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.css";
+                document.body.appendChild(link);
+    
+                var daterangepicker = document.createElement('script');
+                daterangepicker.src = '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js';
+                document.body.appendChild(daterangepicker);
+    
+                daterangepicker.onload =  function() {
+                  const options = {
+                    singleDatePicker: true,
+                    showDropdowns: true,
+                  }
+                  $(input).daterangepicker(options);
+                };
+              }
+            } else {
+              // console.log("all libs present");
+              initDateRange();
+            }
+          },
+        },    
+      }, {       
+        isComponent(el) {
+          var dateType;
+
+          if (el.getAttribute && el.getAttribute('data-slot') === 'date') {
+            dateType = true;
+          } else {
+            dateType = false;
+          }
+          if(el.tagName == 'INPUT' && dateType){
+            return {type: 'date'};
+          }
+        },
+      }),
+      view: defaultView
+    });
+ 
+
   }
 
 }

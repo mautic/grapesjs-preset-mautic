@@ -73,9 +73,7 @@ export default class PreferenceCenterBlocks {
         // type: 'PreferredChannel',
         components: [
           {
-            components: [
-              { type: 'label', components: 'I prefer communication by' },
-            ],
+            components: [{ type: 'label', components: 'I prefer communication by' }],
           },
           {
             components: [{ type: 'select' }],

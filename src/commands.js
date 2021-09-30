@@ -24,6 +24,5 @@ export default (editor) => {
   editor.Commands.add('preset-mautic:dynamic-content-delete-store-item', {
     run: (edtr, sender, options) =>
       dynamicContentCmd.deleteDynamicContentStoreItem(edtr, sender, options),
-  }); 
-  
-}
+  });
+};

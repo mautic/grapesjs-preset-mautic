@@ -10,7 +10,8 @@ export default (editor) => {
     const dcdc = new DynamicContentDomComponents(editor);
     dcdc.addDynamicContentType();
   }
-  if (mode === ContentService.modePageHtml) {
+ 
+  if(mode === ContentService.modePageHtml){
     const pcdc = new PreferenceCenterDomComponents(editor);
     pcdc.addPreferenceCenterType();
   }
