@@ -15,7 +15,7 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 - Open Block Manager at launch
 - Add Dynamic Content Block used in Mautic
 
-
+## 
 
 ## Options
 
@@ -27,10 +27,12 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 | sourceEditModalTitle        | Title for source code modal           | 'Edit code'            |
 | deleteAssetConfirmText      | Label for asset deletion confirm      | 'Are you sure?'        |
 | showLayersManager           | Show Layers Manager panel             | false                  |
+| combineSettingsAndSm        | Show settings combined with the Style Manager   | true         |
 | showImportButton            | Show Import code button               | false                  |
 | categorySectionLabel        | Category 'section' label              | 'Sections'             |
 | categoryBlockLabel          | Category 'block' label                | 'Blocks'               |
 | dynamicContentModalTitle    | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
+
 
 ## Summary
 
@@ -122,6 +124,28 @@ Html needs to be `beautified` for the click tracking to work. Therefore, we can 
 
 > `beautify` option is deprecated in mjml-core and only available in mjml cli.
 https://github.com/mautic/mautic/issues/10331
+
+## Logging
+
+### Logging
+
+```js
+this.logger = new Logger(editor);
+this.logger.debug('Some info for debugging');
+```
+
+### Changing the log level
+During development the log level can be set to debug in `index.js` 
+
+```js
+  const config = {
+    showLayersManager: 0,
+    showImportButton: 0,
+    logFilter: 'log:debug',
+    // logFilter: 'log:info',
+    ...opts,
+  };
+```
 
 ## How to test a preset pull request
 
