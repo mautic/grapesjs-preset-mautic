@@ -29,6 +29,7 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 | showLayersManager           | Show Layers Manager panel             | false                  |
 | combineSettingsAndSm        | Show settings combined with the Style Manager   | true         |
 | showImportButton            | Show Import code button               | false                  |
+| defaultPanel                | Set the panel that should be open by default: [Button ids](https://github.com/artf/grapesjs/blob/4bc79bd304072b458f63482d3a4f5049c6491467/src/panels/config/config.js#L56)       | 'open-blocks' |
 | categorySectionLabel        | Category 'section' label              | 'Sections'             |
 | categoryBlockLabel          | Category 'block' label                | 'Blocks'               |
 | dynamicContentModalTitle    | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
