@@ -124,9 +124,7 @@ Html needs to be `beautified` for the click tracking to work. Therefore, we can 
 https://github.com/mautic/mautic/issues/10331
 
 ### Dynamic Content
-- Only HTML allowd at the time
-- Takes HTML and adds it to the canvas with the mj-raw component
-
+- Takes HTML from the Dynamic Content popup and adds it to the canvas based on the text (html) or mj-text (mjml) component.
 
 ## How to test a preset pull request
 
