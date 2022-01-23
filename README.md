@@ -15,8 +15,6 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 - Open Block Manager at launch
 - Add Dynamic Content Block used in Mautic
 
-## 
-
 ## Options
 
 | Option                      | Description                           | Default                |
@@ -128,11 +126,14 @@ https://github.com/mautic/mautic/issues/10331
 
 ## Logging
 
-### Logging
+### How to log
 
 ```js
 this.logger = new Logger(editor);
-this.logger.debug('Some info for debugging');
+this.logger.debug('Some info for debugging', {param} );
+this.logger.info('Some info for debugging');
+this.logger.warning('Some info for debugging');
+this.logger.error('Some info for debugging');
 ```
 
 ### Changing the log level
