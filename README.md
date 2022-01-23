@@ -123,6 +123,11 @@ Html needs to be `beautified` for the click tracking to work. Therefore, we can 
 > `beautify` option is deprecated in mjml-core and only available in mjml cli.
 https://github.com/mautic/mautic/issues/10331
 
+### Dynamic Content
+- Only HTML allowd at the time
+- Takes HTML and adds it to the canvas with the mj-raw component
+
+
 ## How to test a preset pull request
 
 1. Build the preset: `npm run build` (done by author)
