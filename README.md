@@ -149,6 +149,9 @@ During development the log level can be set to debug in `index.js`
   };
 ```
 
+### Dynamic Content
+- Takes HTML from the Dynamic Content popup and adds it to the canvas based on the text (html) or mj-text (mjml) component.
+
 ## How to test a preset pull request
 
 1. Build the preset: `npm run build` (done by author)
