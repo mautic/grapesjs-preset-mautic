@@ -14,7 +14,7 @@ export default class ButtonApplyCommand {
    * @param editor
    * @param sender
    */
-  static applyEmail(editor, sender) {
+  static applyForm(editor, sender) {
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
 
     if (ContentService.isMjmlMode(editor)) {

@@ -68,7 +68,7 @@ export default class ButtonApply {
 
 
   getCallback() {
-    return ButtonApplyCommand.applyEmail;
+    return ButtonApplyCommand.applyForm;
   }
 
   static getEmailForm() {
