@@ -14,7 +14,6 @@
     // "grapesjs": true,
     "Mousetrap": true,
     "Mautic": true,
-    "mauticAjaxCsrf": true,
     "MauticVars": true,
     "moment": true,
     "mauticBaseUrl": false
