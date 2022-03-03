@@ -15,7 +15,6 @@
     "Mousetrap": true,
     "Mautic": true,
     "MauticVars": true,
-    "moment": true,
     "mauticBaseUrl": false
   }
 }
