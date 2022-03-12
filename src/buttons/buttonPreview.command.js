@@ -1,49 +1,34 @@
+import ButtonsService from './buttons.service';
+import ContentService from '../content.service';
+
 export default class ButtonPreviewCommand {
   /**
    * The command name
    */
-  static name = 'preset-mautic:preview-email';
+  static name = 'preset-mautic:preview-form';
 
   /**
    * Email preview command
+   *
+   * @param editor
    */
-  static previewEmail() {
-    const emailId = ButtonPreviewCommand.getEmailId();
+  static previewForm(editor) {
+    const form = ButtonsService.getForm();
+    const instanceId = ButtonsService.getInstanceId(form);
 
-    ButtonPreviewCommand.openPreview(emailId);
+    ButtonPreviewCommand.openPreview(editor, instanceId);
   }
 
   /**
    * Open  the email preview
    *
+   * @param editor
    * @param emailId
    */
-  static openPreview(emailId) {
-    const url = `${window.location.origin}${mauticBaseUrl}email/preview/${emailId}`;
+  static openPreview(editor, emailId) {
+    const mode = ContentService.getMode(editor);
+    const url = `${window.location.origin}${mauticBaseUrl}${mode.split('-')[0]}/preview/${emailId}`;
 
     window.open(url, '_blank');
-  }
-
-  /**
-   * Get email id for open preview
-   *
-   * @return string|null
-   */
-  static getEmailId() {
-    const emailForm = ButtonPreviewCommand.getEmailForm();
-    const url = emailForm[0].action;
-    const regexpEmailId = /emails\/edit\/(\d+)$/g;
-    const match = regexpEmailId.exec(url);
-
-    return match ? match[1] : null;
-  }
-
-  /**
-   * Get a jQuery email form object
-   *
-   * @return object
-   */
-  static getEmailForm() {
-    return document.getElementsByName('emailform');
   }
 }

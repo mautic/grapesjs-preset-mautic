@@ -1,4 +1,6 @@
 import ButtonPreviewCommand from './buttonPreview.command';
+import ButtonApplyCommand from './buttonApply.command';
+import ButtonsService from './buttons.service';
 
 export default class ButtonPreview {
   editor;
@@ -15,15 +17,11 @@ export default class ButtonPreview {
    * Add the preview button
    */
   addButton() {
-    const emailForm = ButtonPreviewCommand.getEmailForm();
-    const url = emailForm[0].action;
-    const regexp = /emails\/new/g;
-
     let title = Mautic.translate('grapesjsbuilder.buttons.buttonPreview.title');
     let disable = false;
     let command = ButtonPreview.getCommand();
 
-    if (url.match(regexp)) {
+    if (ButtonsService.isNewEntity()) {
       title = Mautic.translate('grapesjsbuilder.buttons.buttonPreview.titleDisabled');
       disable = true;
       command = '';
@@ -44,7 +42,7 @@ export default class ButtonPreview {
       },
     ]);
 
-    this.editor.on('stop:preset-mautic:apply-email', () => {
+    this.editor.on(`stop:${ButtonApplyCommand.name}`, () => {
       if (this.editor.Panels.getButton('devices-c', 'devices-c-preview').get('disable') === true) {
         this.editor.Panels.getButton('devices-c', 'devices-c-preview').set('disable', false);
         this.editor.Panels.getButton('devices-c', 'devices-c-preview').set(
@@ -79,6 +77,6 @@ export default class ButtonPreview {
    * @returns Function
    */
   static getCallback() {
-    return ButtonPreviewCommand.previewEmail;
+    return ButtonPreviewCommand.previewForm;
   }
 }
