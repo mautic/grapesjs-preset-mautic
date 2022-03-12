@@ -1,5 +1,6 @@
 import ButtonClose from './buttons/buttonClose';
 import ButtonApply from './buttons/buttonApply';
+import ButtonPreview from './buttons/buttonPreview';
 export default ((editor, opts = {}) => {
   const {
     $
@@ -88,8 +89,12 @@ export default ((editor, opts = {}) => {
 
   if (toggleImages !== null) {
     pm.removeButton('options', 'gjs-toggle-images');
-  } // add editor apply button
+  } // add editor preview button
 
+
+  const btnPreview = new ButtonPreview(editor);
+  btnPreview.addCommand();
+  btnPreview.addButton(); // add editor apply button
 
   const btnApply = new ButtonApply(editor);
   btnApply.addCommand();
