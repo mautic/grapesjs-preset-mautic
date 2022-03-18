@@ -3,6 +3,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 import ContentService from '../content.service';
 import MjmlService from '../mjml/mjml.service';
 import ButtonCloseCommands from './buttonClose.command';
+import ButtonsService from './buttons.service';
 export default class ButtonApplyCommand {
   /**
    * The command name
@@ -43,21 +44,11 @@ export default class ButtonApplyCommand {
 
 
   static postForm(editor, sender) {
-    const emailForm = ButtonApplyCommand.getEmailForm();
-    const emailFormSubject = ButtonApplyCommand.getEmailFormSubject(emailForm);
-    const emailFormName = ButtonApplyCommand.getEmailFormName(emailForm);
+    const mauticForm = ButtonsService.getMauticForm();
     sender.set('className', 'fa fa-spinner fa-spin');
-
-    if (emailFormSubject.val() === '') {
-      emailFormSubject.val(ButtonApplyCommand.getDefaultEmailName());
-    }
-
-    if (emailFormName.val() === '') {
-      emailFormName.val(ButtonApplyCommand.getDefaultEmailName());
-    }
-
-    Mautic.inBuilderSubmissionOn(emailForm);
-    Mautic.postForm(emailForm, ButtonApplyCommand.postFormResponse.bind(this, editor, sender, emailForm));
+    ButtonApplyCommand.setDefaultValues(editor);
+    Mautic.inBuilderSubmissionOn(mauticForm);
+    Mautic.postForm(mauticForm, ButtonApplyCommand.postFormResponse.bind(this, editor, sender));
     Mautic.inBuilderSubmissionOff();
   }
   /**
@@ -66,12 +57,13 @@ export default class ButtonApplyCommand {
    *
    * @param editor
    * @param sender
-   * @param emailForm
    * @param response
    */
 
 
-  static postFormResponse(editor, sender, emailForm, response) {
+  static postFormResponse(editor, sender, response) {
+    const mauticForm = ButtonsService.getMauticForm();
+
     if (response.validationError !== null) {
       const title = Mautic.translate('grapesjsbuilder.panelsViewsCommandModalTitleError');
       ButtonApplyCommand.showModal(editor, title, response.validationError);
@@ -85,8 +77,8 @@ export default class ButtonApplyCommand {
       } // update form action
 
 
-      if (ButtonApplyCommand.strcmp(emailForm[0].baseURI, emailForm[0].action) !== 0) {
-        emailForm[0].action = emailForm[0].baseURI;
+      if (ButtonsService.strcmp(mauticForm[0].baseURI, mauticForm[0].action) !== 0) {
+        mauticForm[0].action = mauticForm[0].baseURI;
       }
     }
 
@@ -103,11 +95,11 @@ export default class ButtonApplyCommand {
 
   static showModal(editor, title, text) {
     const modal = editor.Modal;
-    modal.setTitle(`<h4 class="text-danger">${title}</h4>`);
     const body = document.createElement('div');
     const content = document.createElement('div');
     const footer = document.createElement('div');
     const btnClose = document.createElement('button');
+    modal.setTitle(`<h4 class="text-danger">${title}</h4>`);
     content.classList.add('panel-body');
     content.innerText = text;
     body.appendChild(content);
@@ -128,41 +120,38 @@ export default class ButtonApplyCommand {
       }
     });
   }
-
-  static getEmailForm() {
-    return mQuery('form[name=emailform]');
-  }
-
-  static getEmailFormSubject(emailForm) {
-    return emailForm.find('#emailform_subject');
-  }
-
-  static getEmailFormName(emailForm) {
-    return emailForm.find('#emailform_name');
-  }
-
-  static getDefaultEmailName() {
-    return `E-Mail ${moment().format('YYYY-MM-D hh:mm:ss')}`;
-  }
   /**
-   * Compares two strings and returns an integer value that represents the result of the comparison:
-   *  1 - string 1 less than string 2
-   *  0 - string 1 equal string 2
-   * -1 - string 1 greater than string 2
-   *
-   * @param string1
-   * @param string2
-   *
-   * @returns Integer
+   * Set a default value for the required form items.
+   * The email form has subject and internal name fields as a required.
+   * The page form has a title field as a required.
    */
 
 
-  static strcmp(string1, string2) {
-    if (string1.toString() < string2.toString()) return -1;
-    if (string1.toString() > string2.toString()) return 1;
-    return 0;
+  static setDefaultValues(editor) {
+    const mode = ContentService.getMode(editor);
+
+    if (mode === ContentService.modeEmailHtml || mode === ContentService.modeEmailMjml) {
+      const formEmailSubject = ButtonsService.getFormItemById('emailform_subject');
+      const formEmailName = ButtonsService.getFormItemById('emailform_name');
+
+      if (formEmailSubject.value === '') {
+        formEmailSubject.value = ButtonsService.getDefaultValue(mode.split('-')[0]);
+      }
+
+      if (formEmailName.value === '') {
+        formEmailName.value = ButtonsService.getDefaultValue(mode.split('-')[0]);
+      }
+    }
+
+    if (mode === ContentService.modePageHtml) {
+      const formPageTitle = ButtonsService.getFormItemById('page_title');
+
+      if (formPageTitle.value === '') {
+        formPageTitle.value = ButtonsService.getDefaultValue(mode.split('-')[0]);
+      }
+    }
   }
 
 }
 
-_defineProperty(ButtonApplyCommand, "name", 'preset-mautic:apply-email');
+_defineProperty(ButtonApplyCommand, "name", 'preset-mautic:apply-form');
