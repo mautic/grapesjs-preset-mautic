@@ -16,7 +16,6 @@
     "Mautic": true,
     "mauticAjaxCsrf": true,
     "MauticVars": true,
-    "moment": true,
     "mauticBaseUrl": false
   }
 }
