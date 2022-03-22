@@ -26,10 +26,10 @@ export default class ButtonService {
    */
   static getInstanceId(form) {
     const url = form[0].action;
-    const regexpEmailId = /\/edit\/(\d+)$/g;
+    const regexpEmailId = /(emails|pages)\/edit\/(\d+)$/g;
     const match = regexpEmailId.exec(url);
 
-    return match ? match[1] : null;
+    return match ? match[2] : null;
   }
 
   /**
