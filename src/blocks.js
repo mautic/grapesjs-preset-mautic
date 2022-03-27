@@ -1,12 +1,19 @@
 import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
 import ContentService from './content.service';
 import ButtonBlock from './buttonBlock';
+import BlocksMjml from './blocks/blocks.mjml';
 
 export default (editor, opts = {}) => {
   const bm = editor.BlockManager;
   const blocks = bm.getAll();
 
   const mode = ContentService.getMode(editor);
+
+  // add additional blocks for the mjml email builder
+  if (mode === ContentService.modeEmailMjml) {
+    const blockMjml = new BlocksMjml(editor);
+    blockMjml.addBlocks();
+  }
 
   // a add button block for landing page
   if (mode === ContentService.modePageHtml) {
@@ -56,6 +63,12 @@ export default (editor, opts = {}) => {
 
   if (typeof bm.get('mj-3-columns') !== 'undefined') {
     bm.get('mj-3-columns').set({
+      category: Mautic.translate('grapesjsbuilder.categorySectionLabel'),
+    });
+  }
+
+  if (typeof bm.get('mj-37-columns') !== 'undefined') {
+    bm.get('mj-37-columns').set({
       category: Mautic.translate('grapesjsbuilder.categorySectionLabel'),
     });
   }
