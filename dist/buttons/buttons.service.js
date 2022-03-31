@@ -26,9 +26,9 @@ export default class ButtonService {
 
   static getInstanceId(form) {
     const url = form[0].action;
-    const regexpEmailId = /\/edit\/(\d+)$/g;
+    const regexpEmailId = /(emails|pages)\/edit\/(\d+)$/g;
     const match = regexpEmailId.exec(url);
-    return match ? match[1] : null;
+    return match ? match[2] : null;
   }
   /**
    * Get jQuery email form object
@@ -72,24 +72,6 @@ export default class ButtonService {
 
   static capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
-  }
-  /**
-   * Compares two strings and returns an integer value that represents the result of the comparison:
-   *  1 - string 1 less than string 2
-   *  0 - string 1 equal string 2
-   * -1 - string 1 greater than string 2
-   *
-   * @param string1
-   * @param string2
-   *
-   * @returns Integer
-   */
-
-
-  static strcmp(string1, string2) {
-    if (string1.toString() < string2.toString()) return -1;
-    if (string1.toString() > string2.toString()) return 1;
-    return 0;
   }
   /**
    * Get the current date
