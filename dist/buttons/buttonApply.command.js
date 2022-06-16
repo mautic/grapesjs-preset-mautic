@@ -77,7 +77,7 @@ export default class ButtonApplyCommand {
       } // update form action
 
 
-      if (ButtonsService.strcmp(mauticForm[0].baseURI, mauticForm[0].action) !== 0) {
+      if (mauticForm[0].baseURI !== mauticForm[0].action) {
         mauticForm[0].action = mauticForm[0].baseURI;
       }
     }
