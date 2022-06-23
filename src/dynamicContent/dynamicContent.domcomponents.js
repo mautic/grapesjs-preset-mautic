@@ -1,4 +1,3 @@
-import ContentService from '../content.service';
 import DynamicContentService from './dynamicContent.service';
 
 export default class DynamicContentDomComponents {
@@ -6,24 +5,23 @@ export default class DynamicContentDomComponents {
 
   static addDynamicContentType(editor) {
     const dc = editor.DomComponents;
-    const baseTypeName = ContentService.isMjmlMode(editor) ? 'mj-text' : 'text';
-    const tagName = ContentService.isMjmlMode(editor) ? 'mj-text' : 'div';
-    const baseType = dc.getType(baseTypeName);
-    const baseModel = baseType.model;
-    const model = baseModel.extend(
+    const defaultType = dc.getType('default');
+    const defaultModel = defaultType.model;
+
+    const model = defaultModel.extend(
       {
         defaults: {
-          ...baseModel.prototype.defaults,
+          ...defaultModel.prototype.defaults,
           name: 'Dynamic Content',
-          tagName,
-          draggable: '[data-gjs-type=cell],[data-gjs-type=mj-column]',
+          draggable: '[data-gjs-type=cell]',
           droppable: false,
           editable: false,
           stylable: false,
           propagate: ['droppable', 'editable'],
           attributes: {
+            // Default attributes
             'data-gjs-type': 'dynamic-content', // Type for GrapesJS
-            'data-slot': 'dynamicContent', // used to find the DC component on the canvas for e.g. token transformation
+            'data-slot': 'dynamicContent', // Retro compatibility with old template
           },
         },
         /**
@@ -69,7 +67,7 @@ export default class DynamicContentDomComponents {
       }
     );
 
-    const view = baseType.view.extend({
+    const view = defaultType.view.extend({
       attributes: {
         style: 'pointer-events: all; display: table; width: 100%;user-select: none;',
       },

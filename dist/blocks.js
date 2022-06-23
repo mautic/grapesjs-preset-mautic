@@ -2,6 +2,7 @@ import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
 import ContentService from './content.service';
 import ButtonBlock from './buttonBlock';
 import BlocksMjml from './blocks/blocks.mjml';
+import PreferenceCenterBlocks from './preferenceCenter/preferenceCenter.blocks';
 export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
   const blocks = bm.getAll();
@@ -14,12 +15,20 @@ export default ((editor, opts = {}) => {
   // a add button block for landing page
   if (mode === ContentService.modePageHtml) {
     const buttonBlock = new ButtonBlock(editor);
-    buttonBlock.addButtonBlock();
+    buttonBlock.addButtonBlock(); //check if page is for preference center
+
+    const isPreferenceCenter = ContentService.isPreferenceCenter();
+
+    if (isPreferenceCenter) {
+      const pcb = new PreferenceCenterBlocks(editor);
+      pcb.addPreferenceCenterBlock();
+    }
   } else {
-    // Add Dynamic Content block only for email modes
-    const dcb = new DynamicContentBlocks(editor, opts);
-    dcb.addDynamciContentBlock();
+  // Add Dynamic Content block only for email modes
+  const dcb = new DynamicContentBlocks(editor, opts);
+  dcb.addDynamciContentBlock();
   }
+  // Add icon to mj-hero
 
   // Add icon to mj-hero
   if (typeof bm.get('mj-hero') !== 'undefined') {
@@ -42,6 +51,54 @@ export default ((editor, opts = {}) => {
     });
   });
 
+  /*
+   * Blocks for Preference Center Category
+   */
+  //check if page is for preference center
+
+  if (mQuery('#page_isPreferenceCenter_1').is(':checked')) {
+    if (typeof bm.get('MyCategories') !== 'undefined') {
+      bm.get('MyCategories').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('MySegment') !== 'undefined') {
+      bm.get('MySegment').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('PreferredChannel') !== 'undefined') {
+      bm.get('PreferredChannel').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('SuccessMessage') !== 'undefined') {
+      bm.get('SuccessMessage').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('ChannelFrequency') !== 'undefined') {
+      bm.get('ChannelFrequency').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('SavePreferences') !== 'undefined') {
+      bm.get('SavePreferences').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+
+    if (typeof bm.get('UnsubscribeAll') !== 'undefined') {
+      bm.get('UnsubscribeAll').set({
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+      });
+    }
+  }
   /*
    * Custom block inside Sections category
    */
