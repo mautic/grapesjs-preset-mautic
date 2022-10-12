@@ -1,6 +1,6 @@
 # GrapesJS Preset Mautic
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-4-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This preset configures GrapesJS to be used as a Mautic Builder with some unique features and blocks.
@@ -168,6 +168,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://www.udemy.com/certificate/UC-5CZA2NJ8/"><img src="https://avatars.githubusercontent.com/u/22201881?v=4?s=100" width="100px;" alt="Disha P"/><br /><sub><b>Disha P</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=disha-pishavadia24" title="Code">💻</a></td>
       <td align="center"><a href="http://www.idea2.ch"><img src="https://avatars.githubusercontent.com/u/13075514?v=4?s=100" width="100px;" alt="Adrian"/><br /><sub><b>Adrian</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Code">💻</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Documentation">📖</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Aadiux" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-adiux" title="User Testing">📓</a></td>
       <td align="center"><a href="https://stackoverflow.com/users/902161/irfan"><img src="https://avatars.githubusercontent.com/u/4272642?v=4?s=100" width="100px;" alt="Irfan Hanfi"/><br /><sub><b>Irfan Hanfi</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=irfanhanfi" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/ekkeguembel"><img src="https://avatars.githubusercontent.com/u/43146234?v=4?s=100" width="100px;" alt="Ekkehard Gümbel"/><br /><sub><b>Ekkehard Gümbel</b></sub></a><br /><a href="#userTesting-ekkeguembel" title="User Testing">📓</a></td>
     </tr>
   </tbody>
 </table>
