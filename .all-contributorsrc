@@ -25,6 +25,15 @@
         "review",
         "userTesting"
       ]
+    },
+    {
+      "login": "irfanhanfi",
+      "name": "Irfan Hanfi",
+      "avatar_url": "https://avatars.githubusercontent.com/u/4272642?v=4",
+      "profile": "https://stackoverflow.com/users/902161/irfan",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
@@ -32,5 +41,6 @@
   "projectOwner": "mautic",
   "repoType": "github",
   "repoHost": "https://github.com",
-  "skipCi": true
+  "skipCi": true,
+  "commitConvention": "angular"
 }
