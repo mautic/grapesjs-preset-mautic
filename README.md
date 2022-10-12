@@ -1,6 +1,6 @@
 # GrapesJS Preset Mautic
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This preset configures GrapesJS to be used as a Mautic Builder with some unique features and blocks.
@@ -171,6 +171,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center"><a href="https://github.com/ekkeguembel"><img src="https://avatars.githubusercontent.com/u/43146234?v=4?s=100" width="100px;" alt="Ekkehard Gümbel"/><br /><sub><b>Ekkehard Gümbel</b></sub></a><br /><a href="#userTesting-ekkeguembel" title="User Testing">📓</a></td>
       <td align="center"><a href="http://johnlinhart.com"><img src="https://avatars.githubusercontent.com/u/1235442?v=4?s=100" width="100px;" alt="John Linhart"/><br /><sub><b>John Linhart</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Aescopecz" title="Reviewed Pull Requests">👀</a></td>
       <td align="center"><a href="https://github.com/volha-pivavarchyk"><img src="https://avatars.githubusercontent.com/u/96085911?v=4?s=100" width="100px;" alt="Volha Pivavarchyk"/><br /><sub><b>Volha Pivavarchyk</b></sub></a><br /><a href="#userTesting-volha-pivavarchyk" title="User Testing">📓</a></td>
+      <td align="center"><a href="https://github.com/annamunk"><img src="https://avatars.githubusercontent.com/u/102536220?v=4?s=100" width="100px;" alt="Anna Munk"/><br /><sub><b>Anna Munk</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=annamunk" title="Code">💻</a></td>
     </tr>
   </tbody>
 </table>
