@@ -9,7 +9,7 @@ export default class ButtonCloseCommands {
 
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
     const htmlDocument = ContentService.getCanvasAsHtmlDocument(editor);
-    let htmlString = ContentService.serializeHtmlDocument(htmlDocument); // eslint-disable-next-line no-undef
+    let htmlString = ContentService.serializeHtmlDocument(htmlDocument);
 
     if (mauticEditorFonts) {
       htmlString = EditorFontsService.addFontLinksToHtml(htmlString);
@@ -27,7 +27,7 @@ export default class ButtonCloseCommands {
 
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens'); // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
 
-    let html = ContentService.getEditorHtmlContent(editor); // eslint-disable-next-line no-undef
+    let html = ContentService.getEditorHtmlContent(editor);
 
     if (mauticEditorFonts) {
       html = EditorFontsService.addFontLinksToHtml(html);
@@ -49,8 +49,7 @@ export default class ButtonCloseCommands {
 
     if (!htmlCode || !mjmlCode) {
       throw new Error('Could not generate html from MJML');
-    } // eslint-disable-next-line no-undef
-
+    }
 
     if (mauticEditorFonts) {
       htmlCode = EditorFontsService.addFontLinksToHtml(htmlCode);

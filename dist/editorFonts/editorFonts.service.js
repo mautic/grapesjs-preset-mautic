@@ -25,8 +25,7 @@ export default class EditorFontsService {
   }
 
   static updateFontList(editor, fontList) {
-    const canvasHead = editor.Canvas.getDocument().head; // eslint-disable-next-line no-undef
-
+    const canvasHead = editor.Canvas.getDocument().head;
     mauticEditorFonts.forEach(item => {
       if (!fontList.find(element => element.name === item.name)) {
         fontList.push({
@@ -50,8 +49,7 @@ export default class EditorFontsService {
   static addFontLinksToHtml(htmlCode) {
     const htmlDoc = new DOMParser().parseFromString(htmlCode, 'text/html');
     const headElem = htmlDoc.head;
-    const headLinks = [...headElem.getElementsByTagName('link')]; // eslint-disable-next-line no-undef
-
+    const headLinks = [...headElem.getElementsByTagName('link')];
     mauticEditorFonts.forEach(item => {
       // Check which fonts are used
       if (item.url && htmlCode.indexOf(item.font) !== -1) {
