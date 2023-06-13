@@ -14,7 +14,7 @@
     "prettier": "node_modules/.bin/prettier -w src/",
     "prettier-check": "node_modules/.bin/prettier -c src/",
     "bump": "npm version patch -m 'Bump v%s'",
-    "release": "npm run bump && npm run build && cd dist/ && npm publish && cd .. && git push && git push --tags"
+    "release": "npm run bump && npm run build && cp package.json dist/ && cd dist/ && npm publish && cd .. && git push && git push --tags"
   },
   "keywords": [
     "grapesjs",
