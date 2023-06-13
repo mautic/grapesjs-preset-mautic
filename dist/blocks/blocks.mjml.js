@@ -1,15 +1,13 @@
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 export default class BlocksMjml {
   constructor(editor) {
     _defineProperty(this, "blockManager", void 0);
-
     _defineProperty(this, "editor", void 0);
-
     this.editor = editor;
     this.blockManager = editor.BlockManager;
   }
-
   addBlocks() {
     const sections37 = `<mj-column width="30%"><mj-text>Content 1</mj-text></mj-column>
         <mj-column width="70%"><mj-text>Content 2</mj-text></mj-column>`;
@@ -22,9 +20,11 @@ export default class BlocksMjml {
       content: `<mj-section>${sections37}</mj-section>`
     });
     const textSect = `<mj-column>
+          <mj-text font-size="18px" font-weight="bold">
+            Insert title here
+          </mj-text>
           <mj-text>
-            <h1>Content 1</h1>
-            <p>Content 2</p>
+            Insert text here
           </mj-text>
         </mj-column>`;
     this.blockManager.add('text-sect', {
@@ -37,17 +37,21 @@ export default class BlocksMjml {
     });
     const gridItem = `<mj-group>
         <mj-column>
-          <mj-image src="" /></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
+          <mj-text font-size="18px" font-weight="bold" align="center">
+            Insert title here
+          </mj-text>
           <mj-text align="center">
-            <h1>Title</h1>
-            <p>Content</p>
+            Insert text here
           </mj-text>
         </mj-column>
         <mj-column>
-          <mj-image src="" /></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
+          <mj-text font-size="18px" font-weight="bold" align="center">
+            Insert title here
+          </mj-text>
           <mj-text align="center">
-            <h1>Title</h1>
-            <p>Content</p>
+            Insert text here
           </mj-text>
         </mj-column>
       </mj-group>`;
@@ -61,12 +65,14 @@ export default class BlocksMjml {
     });
     const listItem = `<mj-group>
         <mj-column width="30%">
-          <mj-image src="" height="100%"></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
         </mj-column>
         <mj-column width="70%">
+          <mj-text font-size="18px" font-weight="bold" align="center">
+            Insert title here
+          </mj-text>
           <mj-text align="center">
-            <h1>Title</h1>
-            <p>Content</p>
+            Insert text here
           </mj-text>
         </mj-column>
       </mj-group>`;
@@ -79,5 +85,4 @@ export default class BlocksMjml {
       content: `<mj-section>${listItem}</mj-section>`
     });
   }
-
 }
