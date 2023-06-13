@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Webmecanik/grapesjs-preset-mautic.git"
+    "url": "https://github.com/adiux/grapesjs-preset-mautic.git"
   },
   "scripts": {
     "start": "grapesjs-cli serve",
@@ -13,7 +13,8 @@
     "lint": "eslint src/",
     "prettier": "node_modules/.bin/prettier -w src/",
     "prettier-check": "node_modules/.bin/prettier -c src/",
-    "bump": "npm version patch -m 'Bump v%s'"
+    "bump": "npm version patch -m 'Bump v%s'",
+    "release": "npm run bump && npm run build && cd dist/ && npm publish && cd .. && git push && git push --tags"
   },
   "keywords": [
     "grapesjs",
