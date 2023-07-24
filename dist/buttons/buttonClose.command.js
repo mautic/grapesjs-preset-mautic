@@ -1,5 +1,6 @@
 import ContentService from '../content.service';
 import MjmlService from '../mjml/mjml.service';
+import EditorFontsService from '../editorFonts/editorFonts.service';
 export default class ButtonCloseCommands {
   static closeEditorPageHtml(editor) {
     if (!editor) {
@@ -7,7 +8,13 @@ export default class ButtonCloseCommands {
     }
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
     const htmlDocument = ContentService.getCanvasAsHtmlDocument(editor);
-    ButtonCloseCommands.returnContentToTextarea(editor, ContentService.serializeHtmlDocument(htmlDocument));
+    let htmlString = ContentService.serializeHtmlDocument(htmlDocument);
+
+    if (mauticEditorFonts) {
+      htmlString = EditorFontsService.addFontLinksToHtml(htmlString);
+    }
+
+    ButtonCloseCommands.returnContentToTextarea(editor, htmlString); // Reset HTML
 
     // Reset HTML
     ButtonCloseCommands.resetHtml(editor);
@@ -18,9 +25,15 @@ export default class ButtonCloseCommands {
     }
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
 
-    // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
-    const html = ContentService.getEditorHtmlContent(editor);
-    ButtonCloseCommands.returnContentToTextarea(editor, html);
+    editor.runCommand('preset-mautic:dynamic-content-components-to-tokens'); // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
+
+    let html = ContentService.getEditorHtmlContent(editor);
+
+    if (mauticEditorFonts) {
+      html = EditorFontsService.addFontLinksToHtml(html);
+    }
+
+    ButtonCloseCommands.returnContentToTextarea(editor, html); // Reset HTML
 
     // Reset HTML
     ButtonCloseCommands.resetHtml(editor);
@@ -30,8 +43,8 @@ export default class ButtonCloseCommands {
       throw new Error('No email-MJML editor');
     }
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
-    const htmlCode = MjmlService.getEditorHtmlContent(editor);
-    const mjmlCode = MjmlService.getEditorMjmlContent(editor);
+    let htmlCode = MjmlService.getEditorHtmlContent(editor);
+    const mjmlCode = MjmlService.getEditorMjmlContent(editor); // Update textarea for save
 
     // Update textarea for save
     if (!htmlCode || !mjmlCode) {
@@ -39,7 +52,12 @@ export default class ButtonCloseCommands {
     }
     ButtonCloseCommands.returnContentToTextarea(editor, htmlCode, mjmlCode);
 
-    // Reset HTML
+    if (mauticEditorFonts) {
+      htmlCode = EditorFontsService.addFontLinksToHtml(htmlCode);
+    }
+
+    ButtonCloseCommands.returnContentToTextarea(editor, htmlCode, mjmlCode); // Reset HTML
+
     ButtonCloseCommands.resetHtml(editor);
   }
 
