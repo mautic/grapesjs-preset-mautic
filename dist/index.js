@@ -9,12 +9,14 @@ export default ((editor, opts = {}) => {
   const config = {
     showLayersManager: 0,
     showImportButton: 0,
+    // logFilter: 'log:debug',
     logFilter: 'log:info',
     ...opts
   };
   const logger = new Logger(editor);
-  logger.addListener(config.logFilter, editor); // Extend the original `image` and add a confirm dialog before removing it
+  logger.addListener(config.logFilter, editor);
 
+  // Extend the original `image` and add a confirm dialog before removing it
   am.addType('image', {
     // As you adding on top of an already defined type you can avoid indicating
     // `am.getType('image').view.extend({...` the editor will do it by default
@@ -26,16 +28,17 @@ export default ((editor, opts = {}) => {
         e.stopImmediatePropagation();
         const {
           model
-        } = this; // eslint-disable-next-line no-alert, no-restricted-globals
+        } = this;
 
+        // eslint-disable-next-line no-alert, no-restricted-globals
         if (confirm(Mautic.translate('grapesjsbuilder.deleteAssetConfirmText'))) {
           model.collection.remove(model);
         }
       }
-
     }
-  }); // Load other parts
+  });
 
+  // Load other parts
   loadCommands(editor, config);
   loadComponents(editor, config);
   loadEvents(editor, config);

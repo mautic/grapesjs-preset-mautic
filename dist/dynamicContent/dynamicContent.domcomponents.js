@@ -1,12 +1,12 @@
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
 import ContentService from '../content.service';
 import DynamicContentService from './dynamicContent.service';
 export default class DynamicContentDomComponents {
   constructor() {
     _defineProperty(this, "dcService", void 0);
   }
-
   static addDynamicContentType(editor) {
     const dc = editor.DomComponents;
     const baseTypeName = ContentService.isMjmlMode(editor) ? 'mj-text' : 'text';
@@ -14,7 +14,8 @@ export default class DynamicContentDomComponents {
     const baseType = dc.getType(baseTypeName);
     const baseModel = baseType.model;
     const model = baseModel.extend({
-      defaults: { ...baseModel.prototype.defaults,
+      defaults: {
+        ...baseModel.prototype.defaults,
         name: 'Dynamic Content',
         tagName,
         draggable: '[data-gjs-type=cell],[data-gjs-type=mj-column]',
@@ -26,7 +27,6 @@ export default class DynamicContentDomComponents {
           'data-gjs-type': 'dynamic-content',
           // Type for GrapesJS
           'data-slot': 'dynamicContent' // used to find the DC component on the canvas for e.g. token transformation
-
         }
       },
 
@@ -37,11 +37,11 @@ export default class DynamicContentDomComponents {
         // link component to the corresponding html store item
         this.em.get('Commands').run('preset-mautic:link-component-to-store-item', {
           component: this
-        }); // Add toolbar edit button if it's not already in
+        });
 
+        // Add toolbar edit button if it's not already in
         const toolbar = this.get('toolbar');
         const id = 'toolbar-dynamic-content';
-
         if (!toolbar.filter(tlb => tlb.id === id).length) {
           toolbar.unshift({
             id,
@@ -51,7 +51,8 @@ export default class DynamicContentDomComponents {
             }
           });
         }
-      } // @todo: show the store items default content on the canvas
+      }
+      // @todo: show the store items default content on the canvas
       // updated(property, value, prevValue) {
       //   console.log('Local hook: model.updated', {
       //     property,
@@ -59,8 +60,6 @@ export default class DynamicContentDomComponents {
       //     prevValue,
       //   });
       // },
-
-
     }, {
       // Dynamic Content component detection
       isComponent(el) {
@@ -69,10 +68,8 @@ export default class DynamicContentDomComponents {
             type: 'dynamic-content'
           };
         }
-
         return false;
       }
-
     });
     const view = baseType.view.extend({
       attributes: {
@@ -81,7 +78,6 @@ export default class DynamicContentDomComponents {
       events: {
         dblclick: 'onActive'
       },
-
       // replace token with human readable view
       onRender(el) {
         const dcService = new DynamicContentService(editor);
@@ -90,15 +86,15 @@ export default class DynamicContentDomComponents {
         this.el.innerHTML = dcItem.content;
         dcService.logger.debug('DC: Updated view', dcItem);
       },
-
       // open the dynamic content modal if the editor is added or double clicked
       onActive() {
-        const target = this.model; // open the editor in the popup
-
+        const target = this.model;
+        // open the editor in the popup
         this.em.get('Commands').run('preset-mautic:dynamic-content-open', {
           target
         });
-      } // does not work: gets removed when Sorting (by grapesjs)
+      }
+      // does not work: gets removed when Sorting (by grapesjs)
       // removed() {
       //   // Delete dynamic-content on Mautic side
       //   const component = this.model;
@@ -106,14 +102,12 @@ export default class DynamicContentDomComponents {
       //     .get('Commands')
       //     .run('preset-mautic:dynamic-content-delete-store-item', { component });
       // },
+    });
 
-
-    }); // add the Dynamic Content component
-
+    // add the Dynamic Content component
     dc.addType('dynamic-content', {
       model,
       view
     });
   }
-
 }
