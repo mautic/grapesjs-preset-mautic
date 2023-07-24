@@ -37,9 +37,11 @@ export default class ContentService {
      * (as it's passed by reference), so we don't need to re-assign anything here
      */
     Mautic.sanitizeHtmlBeforeSave(mQuery(originalContent));
-    const htmlCombined = `${doctype}${editor.getHtml()}<style>${editor.getCss({
+    const htmlCombined = `${doctype}<html>${editor.getHtml()}<style>${editor.getCss({
       avoidProtected: true
-    })}</style>`;
+    })}</style></html>`;
+
+    // get a DocumentHTML from the string
     const htmlDocument = parser.parseFromString(htmlCombined, 'text/html');
 
     // if no header is set on the canvas, replace it with existing from theme
@@ -68,14 +70,16 @@ export default class ContentService {
   }
 
   /**
-   * Serialize a HTML Document to a string
+   * Serialize a DocumentHTML Object to a <html> string
    * @param {DocumentHTML} contentDocument
    */
   static serializeHtmlDocument(contentDocument) {
     if (!contentDocument || !(contentDocument instanceof HTMLDocument)) {
       throw new Error('No Html Document');
     }
-    return `${ContentService.serializeDoctype(contentDocument.doctype)}${contentDocument.head.outerHTML}${contentDocument.body.outerHTML}`;
+
+    // @todo add the lang parameter. E.g. <html lang="de-DE">
+    return `${ContentService.serializeDoctype(contentDocument.doctype)}<html>${contentDocument.head.outerHTML}${contentDocument.body.outerHTML}</html>`;
   }
 
   /**
@@ -87,7 +91,7 @@ export default class ContentService {
    */
   static serializeDoctype(doctype) {
     if (!doctype) {
-      return null;
+      return '';
     }
     return new XMLSerializer().serializeToString(doctype);
   }

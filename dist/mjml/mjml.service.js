@@ -21,12 +21,12 @@ export default class MjmlService {
       // not use the built in command: mjml-get-code
       const mjml = this.getEditorMjmlContent(editor);
       const code = this.mjmlToHtml(mjml);
-      return code.html ? code.html.trim() : null;
+      return code.html ? code.html.trim() : '';
     } catch (error) {
       console.warn(error.message);
       alert('Errors inside your template. Template will not be saved.');
     }
-    return null;
+    return '';
   }
 
   /**
