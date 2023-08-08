@@ -27,6 +27,7 @@ export default class ButtonCloseCommands {
 
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens'); // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
 
+    // Getting HTML with CSS inline (only available for "grapesjs-preset-newsletter"):
     let html = ContentService.getEditorHtmlContent(editor);
 
     if (mauticEditorFonts) {
