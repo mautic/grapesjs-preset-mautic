@@ -37,7 +37,7 @@ export default class BlocksMjml {
 
     const gridItem = `<mj-group>
         <mj-column>
-          <mj-image height="auto" src="https://via.placeholder.com/350x250/78c5d6/fff"></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
           <mj-text font-size="18px" font-weight="bold" align="center">
             Insert title here
           </mj-text>
@@ -46,7 +46,7 @@ export default class BlocksMjml {
           </mj-text>
         </mj-column>
         <mj-column>
-          <mj-image height="auto" src="https://via.placeholder.com/350x250/78c5d6/fff"></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
           <mj-text font-size="18px" font-weight="bold" align="center">
             Insert title here
           </mj-text>
@@ -65,7 +65,7 @@ export default class BlocksMjml {
 
     const listItem = `<mj-group>
         <mj-column width="30%">
-          <mj-image height="auto" src="https://via.placeholder.com/350x250/78c5d6/fff"></mj-image>
+          <mj-image height="auto" src="https://via.placeholder.com/172x215/#7f7f7f/ffffff?text=172x215+x2"></mj-image>
         </mj-column>
         <mj-column width="70%">
           <mj-text font-size="18px" font-weight="bold" align="center">

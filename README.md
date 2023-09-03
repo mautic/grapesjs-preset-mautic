@@ -1,6 +1,6 @@
 # GrapesJS Preset Mautic
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This preset configures GrapesJS to be used as a Mautic Builder with some unique features and blocks.
@@ -15,8 +15,6 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 - Open Block Manager at launch
 - Add Dynamic Content Block used in Mautic
 
-
-
 ## Options
 
 | Option                      | Description                           | Default                |
@@ -27,10 +25,13 @@ This preset configures GrapesJS to be used as a Mautic Builder with some unique 
 | sourceEditModalTitle        | Title for source code modal           | 'Edit code'            |
 | deleteAssetConfirmText      | Label for asset deletion confirm      | 'Are you sure?'        |
 | showLayersManager           | Show Layers Manager panel             | false                  |
+| combineSettingsAndSm        | Show settings combined with the Style Manager   | true         |
 | showImportButton            | Show Import code button               | false                  |
+| defaultPanel                | Set the panel that should be open by default: [Button ids](https://github.com/artf/grapesjs/blob/4bc79bd304072b458f63482d3a4f5049c6491467/src/panels/config/config.js#L56)       | 'open-blocks' |
 | categorySectionLabel        | Category 'section' label              | 'Sections'             |
 | categoryBlockLabel          | Category 'block' label                | 'Blocks'               |
 | dynamicContentModalTitle    | Title for Dynamic Content modal       | 'Edit Dynamic Content' |
+
 
 ## Summary
 
@@ -123,6 +124,31 @@ Html needs to be `beautified` for the click tracking to work. Therefore, we can 
 > `beautify` option is deprecated in mjml-core and only available in mjml cli.
 https://github.com/mautic/mautic/issues/10331
 
+## Logging
+
+### How to log
+
+```js
+this.logger = new Logger(editor);
+this.logger.debug('Some info for debugging', {param} );
+this.logger.info('Some info for debugging');
+this.logger.warning('Some info for debugging');
+this.logger.error('Some info for debugging');
+```
+
+### Changing the log level
+During development the log level can be set to debug in `index.js` 
+
+```js
+  const config = {
+    showLayersManager: 0,
+    showImportButton: 0,
+    logFilter: 'log:debug',
+    // logFilter: 'log:info',
+    ...opts,
+  };
+```
+
 ### Dynamic Content
 - Takes HTML from the Dynamic Content popup and adds it to the canvas based on the text (html) or mj-text (mjml) component.
 
@@ -163,10 +189,20 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
 <table>
-  <tr>
-    <td align="center"><a href="https://www.udemy.com/certificate/UC-5CZA2NJ8/"><img src="https://avatars.githubusercontent.com/u/22201881?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Disha P</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=disha-pishavadia24" title="Code">💻</a></td>
-    <td align="center"><a href="http://www.idea2.ch"><img src="https://avatars.githubusercontent.com/u/13075514?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Adrian</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Code">💻</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Documentation">📖</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Aadiux" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-adiux" title="User Testing">📓</a></td>
-  </tr>
+  <tbody>
+    <tr>
+      <td align="center"><a href="https://www.udemy.com/certificate/UC-5CZA2NJ8/"><img src="https://avatars.githubusercontent.com/u/22201881?v=4?s=100" width="100px;" alt="Disha P"/><br /><sub><b>Disha P</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=disha-pishavadia24" title="Code">💻</a></td>
+      <td align="center"><a href="http://www.idea2.ch"><img src="https://avatars.githubusercontent.com/u/13075514?v=4?s=100" width="100px;" alt="Adrian"/><br /><sub><b>Adrian</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Code">💻</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=adiux" title="Documentation">📖</a> <a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Aadiux" title="Reviewed Pull Requests">👀</a> <a href="#userTesting-adiux" title="User Testing">📓</a></td>
+      <td align="center"><a href="https://stackoverflow.com/users/902161/irfan"><img src="https://avatars.githubusercontent.com/u/4272642?v=4?s=100" width="100px;" alt="Irfan Hanfi"/><br /><sub><b>Irfan Hanfi</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=irfanhanfi" title="Code">💻</a></td>
+      <td align="center"><a href="https://github.com/ekkeguembel"><img src="https://avatars.githubusercontent.com/u/43146234?v=4?s=100" width="100px;" alt="Ekkehard Gümbel"/><br /><sub><b>Ekkehard Gümbel</b></sub></a><br /><a href="#userTesting-ekkeguembel" title="User Testing">📓</a></td>
+      <td align="center"><a href="http://johnlinhart.com"><img src="https://avatars.githubusercontent.com/u/1235442?v=4?s=100" width="100px;" alt="John Linhart"/><br /><sub><b>John Linhart</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Aescopecz" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="https://github.com/volha-pivavarchyk"><img src="https://avatars.githubusercontent.com/u/96085911?v=4?s=100" width="100px;" alt="Volha Pivavarchyk"/><br /><sub><b>Volha Pivavarchyk</b></sub></a><br /><a href="#userTesting-volha-pivavarchyk" title="User Testing">📓</a></td>
+      <td align="center"><a href="https://github.com/annamunk"><img src="https://avatars.githubusercontent.com/u/102536220?v=4?s=100" width="100px;" alt="Anna Munk"/><br /><sub><b>Anna Munk</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/commits?author=annamunk" title="Code">💻</a></td>
+    </tr>
+    <tr>
+      <td align="center"><a href="https://github.com/patrykgruszka"><img src="https://avatars.githubusercontent.com/u/8580942?v=4?s=100" width="100px;" alt="Patryk Gruszka"/><br /><sub><b>Patryk Gruszka</b></sub></a><br /><a href="https://github.com/mautic/grapesjs-preset-mautic/pulls?q=is%3Apr+reviewed-by%3Apatrykgruszka" title="Reviewed Pull Requests">👀</a></td>
+    </tr>
+  </tbody>
 </table>
 
 <!-- markdownlint-restore -->

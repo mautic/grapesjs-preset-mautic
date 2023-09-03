@@ -14,6 +14,9 @@
     // "grapesjs": true,
     "Mousetrap": true,
     "Mautic": true,
-    "mauticAjaxCsrf": true
+    "mauticAjaxCsrf": true,
+    "MauticVars": true,
+    "mauticBaseUrl": false,
+    "mauticEditorFonts": true
   }
 }
