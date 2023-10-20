@@ -7,6 +7,7 @@ export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
   const blocks = bm.getAll();
   const mode = ContentService.getMode(editor);
+
   if (mode === ContentService.modeEmailMjml) {
     const blockMjml = new BlocksMjml(editor);
     blockMjml.addBlocks();
@@ -15,7 +16,7 @@ export default ((editor, opts = {}) => {
   // a add button block for landing page
   if (mode === ContentService.modePageHtml) {
     const buttonBlock = new ButtonBlock(editor);
-    buttonBlock.addButtonBlock(); //check if page is for preference center
+    buttonBlock.addButtonBlock(); // check if page is for preference center
 
     const isPreferenceCenter = ContentService.isPreferenceCenter();
 
@@ -24,18 +25,17 @@ export default ((editor, opts = {}) => {
       pcb.addPreferenceCenterBlock();
     }
   } else {
-  // Add Dynamic Content block only for email modes
-  const dcb = new DynamicContentBlocks(editor, opts);
-  dcb.addDynamciContentBlock();
+    // Add Dynamic Content block only for email modes
+    const dcb = new DynamicContentBlocks(editor, opts);
+    dcb.addDynamciContentBlock();
   }
-  // Add icon to mj-hero
 
   // Add icon to mj-hero
   if (typeof bm.get('mj-hero') !== 'undefined') {
     bm.get('mj-hero').set({
       attributes: {
-        class: 'gjs-fonts gjs-f-hero'
-      }
+        class: 'gjs-fonts gjs-f-hero',
+      },
     });
   }
 
@@ -47,55 +47,55 @@ export default ((editor, opts = {}) => {
   // All block inside Blocks category
   blocks.forEach(block => {
     block.set({
-      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel')
+      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel'),
     });
   });
 
   /*
    * Blocks for Preference Center Category
    */
-  //check if page is for preference center
+  // check if page is for preference center
 
   if (mQuery('#page_isPreferenceCenter_1').is(':checked')) {
     if (typeof bm.get('MyCategories') !== 'undefined') {
       bm.get('MyCategories').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('MySegment') !== 'undefined') {
       bm.get('MySegment').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('PreferredChannel') !== 'undefined') {
       bm.get('PreferredChannel').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('SuccessMessage') !== 'undefined') {
       bm.get('SuccessMessage').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('ChannelFrequency') !== 'undefined') {
       bm.get('ChannelFrequency').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('SavePreferences') !== 'undefined') {
       bm.get('SavePreferences').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
 
     if (typeof bm.get('UnsubscribeAll') !== 'undefined') {
       bm.get('UnsubscribeAll').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel')
+        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       });
     }
   }
