@@ -13,11 +13,12 @@ export default class PreferenceCenterBlocks {
       attributes: {
         class: 'fa fa-bookmark-o',
       },
-      content:
-        `<div data-slot="categorylist">
+      content: `<div data-slot="categorylist">
           <div draggable="false">
             <div draggable="false">
-              <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.myCategories.label')}</label>
+              <label draggable="false">${Mautic.translate(
+                'grapesjsbuilder.preferenceCenter.block.myCategories.label'
+              )}</label>
             </div>
             <div draggable="false">
               <input
@@ -27,7 +28,9 @@ export default class PreferenceCenterBlocks {
                 checked="checked"
                 draggable="false"
               />
-              <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.myCategories.text')}</label>
+              <label draggable="false">${Mautic.translate(
+                'grapesjsbuilder.preferenceCenter.block.myCategories.text'
+              )}</label>
             </div>
           </div>
         </div>`,
@@ -40,13 +43,14 @@ export default class PreferenceCenterBlocks {
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
-        class: 'fa fa-list-alt'
+        class: 'fa fa-list-alt',
       },
-      content:
-        `<div data-slot="segmentlist">
+      content: `<div data-slot="segmentlist">
           <div draggable="false">
             <div draggable="false">
-              <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.mySegments.label')}</label>
+              <label draggable="false">${Mautic.translate(
+                'grapesjsbuilder.preferenceCenter.block.mySegments.label'
+              )}</label>
             </div>
             <div draggable="false">
               <input
@@ -56,7 +60,9 @@ export default class PreferenceCenterBlocks {
                 checked="checked"
                 draggable="false"
               />
-              <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.mySegments.label')}</label>
+              <label draggable="false">${Mautic.translate(
+                'grapesjsbuilder.preferenceCenter.block.mySegments.label'
+              )}</label>
             </div>
           </div>
         </div>`,
@@ -69,15 +75,18 @@ export default class PreferenceCenterBlocks {
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
-        class: 'fa fa-envelope-o'
+        class: 'fa fa-envelope-o',
       },
-      content:
-        `<div data-slot="preferedchannel">
+      content: `<div data-slot="preferedchannel">
           <div draggable="false">
-            <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.preferredChannel.label')}</label>
+            <label draggable="false">${Mautic.translate(
+              'grapesjsbuilder.preferenceCenter.block.preferredChannel.label'
+            )}</label>
             <div draggable="false">
               <select draggable="false">
-                <option value="${Mautic.translate('grapesjsbuilder.email')}" selected="selected">${Mautic.translate('grapesjsbuilder.email')}</option>
+                <option value="${Mautic.translate(
+                  'grapesjsbuilder.email'
+                )}" selected="selected">${Mautic.translate('grapesjsbuilder.email')}</option>
               </select>
             </div>
           </div>
@@ -91,11 +100,13 @@ export default class PreferenceCenterBlocks {
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
-        class: 'fa fa-check'
+        class: 'fa fa-check',
       },
       content: `
         <div data-slot="successmessage">
-            <span draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.successMessage.label')}</span>
+            <span draggable="false">${Mautic.translate(
+              'grapesjsbuilder.preferenceCenter.block.successMessage.label'
+            )}</span>
         </div>`,
       style: { padding: '50px' },
     });
@@ -106,10 +117,9 @@ export default class PreferenceCenterBlocks {
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
-        class: 'fa fa-calendar'
+        class: 'fa fa-calendar',
       },
-      content:
-        `<div data-slot="channelfrequency">
+      content: `<div data-slot="channelfrequency">
           <table class="table table-striped" draggable="false">
             <tbody>
               <tr draggable="false">
@@ -117,7 +127,9 @@ export default class PreferenceCenterBlocks {
                   <div class="text-left" draggable="false">
                     <input type="checkbox" checked="" draggable="false">
                     <label class="control-label" draggable="false">
-                        ${Mautic.translate('grapesjsbuilder.preferenceCenter.block.channelFrequency.text.contact_through')}
+                        ${Mautic.translate(
+                          'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.contact_through'
+                        )}
                     </label>
                   </div>
                 </td>
@@ -126,17 +138,25 @@ export default class PreferenceCenterBlocks {
                 <td draggable="false">
                   <div id="frequency_email" class="text-left row" draggable="false">
                     <div draggable="false">
-                      <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.channelFrequency.text.do_not_send')}</label>
+                      <label draggable="false">${Mautic.translate(
+                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.do_not_send'
+                      )}</label>
                       <input type="text" class="frequency form-control" draggable="false">
-                      <label class="fw-n frequency-label" draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.channelFrequency.text.each')}</label>
+                      <label class="fw-n frequency-label" draggable="false">${Mautic.translate(
+                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.each'
+                      )}</label>
                       <select class="form-control" draggable="false">
                         <option value="" selected="selected" draggable="false"></option>
                       </select>
                     </div>
                     <div draggable="false">
-                      <label draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.channelFrequency.text.pause_from')}</label>
+                      <label draggable="false">${Mautic.translate(
+                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.pause_from'
+                      )}</label>
                       <input type="date" class="form-control" draggable="false">
-                      <label class="frequency-label fw-n" draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.channelFrequency.text.to')}</label>
+                      <label class="frequency-label fw-n" draggable="false">${Mautic.translate(
+                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.to'
+                      )}</label>
                       <input type="date" class="form-control" draggable="false">
                     </div>
                   </div>
@@ -154,12 +174,15 @@ export default class PreferenceCenterBlocks {
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
-        class: 'fa fa-ban'
+        class: 'fa fa-ban',
       },
-      content:
-        `<div data-slot="donotcontact">
-            <a href="{dnc_url}" draggable="false">${Mautic.translate('grapesjsbuilder.preferenceCenter.block.unsubscribeAll.link')}</a> 
-            <span draggable="false"> ${Mautic.translate('grapesjsbuilder.preferenceCenter.block.unsubscribeAll.text')}</span>
+      content: `<div data-slot="donotcontact">
+            <a href="{dnc_url}" draggable="false">${Mautic.translate(
+              'grapesjsbuilder.preferenceCenter.block.unsubscribeAll.link'
+            )}</a> 
+            <span draggable="false"> ${Mautic.translate(
+              'grapesjsbuilder.preferenceCenter.block.unsubscribeAll.text'
+            )}</span>
         </div>`,
       style: { padding: '50px' },
     });
@@ -193,7 +216,7 @@ export default class PreferenceCenterBlocks {
             ${Mautic.translate('grapesjsbuilder.preferenceCenter.block.savePreferences.link')}
           </a>
           <div style="clear: both"></div>
-        </div>`
+        </div>`,
     });
   }
 }

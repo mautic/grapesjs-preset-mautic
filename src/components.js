@@ -5,18 +5,19 @@ import ContentService from './content.service';
 
 // https://grapesjs.com/docs/api/component.html
 export default (editor) => {
+  DynamicContentDomComponents.addDynamicContentType(editor);
   const mode = ContentService.getMode(editor);
   if (mode === ContentService.modeEmailHtml) {
     DynamicContentDomComponents.addDynamicContentType(editor);
   }
- 
-  if(mode === ContentService.modePageHtml){
+
+  if (mode === ContentService.modePageHtml) {
     const pcdc = new PreferenceCenterDomComponents(editor);
     pcdc.addPreferenceCenterType();
   }
 
   editor.DomComponents.addType('input', {
-    isComponent: el => el.tagName == 'INPUT',
+    isComponent: (el) => el.tagName == 'INPUT',
     model: {
       defaults: {
         traits: [
@@ -28,15 +29,17 @@ export default (editor) => {
             label: 'Type', // The label you will see in Settings
             name: 'type', // The name of the attribute/property to use on component
             options: [
-              { id: 'text', name: 'Text'},
-              { id: 'email', name: 'Email'},
-              { id: 'password', name: 'Password'},
-              { id: 'number', name: 'Number'},
-            ]
-          }, {
+              { id: 'text', name: 'Text' },
+              { id: 'email', name: 'Email' },
+              { id: 'password', name: 'Password' },
+              { id: 'number', name: 'Number' },
+            ],
+          },
+          {
             type: 'checkbox',
             name: 'required',
-          }],
+          },
+        ],
         // As by default, traits are binded to attributes, so to define
         // their initial value we can use attributes
         attributes: { type: 'text', required: true },

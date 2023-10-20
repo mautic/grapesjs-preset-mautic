@@ -14,7 +14,7 @@ export default class ContentService {
     return ContentService.getMode(editor) === ContentService.modeEmailMjml;
   }
 
-  static isPreferenceCenter(){
+  static isPreferenceCenter() {
     return mQuery('#page_isPreferenceCenter_1').is(':checked');
   }
 

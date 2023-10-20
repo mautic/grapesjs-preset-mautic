@@ -6,7 +6,6 @@ import PreferenceCenterBlocks from './preferenceCenter/preferenceCenter.blocks';
 
 export default (editor, opts = {}) => {
   const bm = editor.BlockManager;
-  const cfg = editor.getConfig();
   const blocks = bm.getAll();
 
   const mode = ContentService.getMode(editor);
