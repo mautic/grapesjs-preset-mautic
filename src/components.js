@@ -7,9 +7,6 @@ import ContentService from './content.service';
 export default (editor) => {
   DynamicContentDomComponents.addDynamicContentType(editor);
   const mode = ContentService.getMode(editor);
-  if (mode === ContentService.modeEmailHtml) {
-    DynamicContentDomComponents.addDynamicContentType(editor);
-  }
 
   if (mode === ContentService.modePageHtml) {
     const pcdc = new PreferenceCenterDomComponents(editor);
