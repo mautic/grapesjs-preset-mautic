@@ -1,5 +1,5 @@
 import Logger from '../logger';
-
+import MjmlService from '../mjml/mjml.service';
 import DynamicContentService from './dynamicContent.service';
 
 export default class DynamicContentCommands {
