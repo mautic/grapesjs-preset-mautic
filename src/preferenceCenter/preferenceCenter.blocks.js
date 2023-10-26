@@ -6,9 +6,9 @@ export default class PreferenceCenterBlocks {
   }
 
   addPreferenceCenterBlock() {
-    this.blockManager.add('MyCategories', {
+    this.blockManager.add('MauticCategories', {
       tagName: 'div',
-      label: Mautic.translate('grapesjsbuilder.preferenceCenter.block.myCategories.label'),
+      label: Mautic.translate('grapesjsbuilder.preferenceCenter.block.MauticCategories.label'),
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       attributes: {
         class: 'fa fa-bookmark-o',
@@ -17,7 +17,7 @@ export default class PreferenceCenterBlocks {
           <div draggable="false">
             <div draggable="false">
               <label draggable="false">${Mautic.translate(
-                'grapesjsbuilder.preferenceCenter.block.myCategories.label'
+                'grapesjsbuilder.preferenceCenter.block.MauticCategories.label'
               )}</label>
             </div>
             <div draggable="false">
@@ -29,7 +29,7 @@ export default class PreferenceCenterBlocks {
                 draggable="false"
               />
               <label draggable="false">${Mautic.translate(
-                'grapesjsbuilder.preferenceCenter.block.myCategories.text'
+                'grapesjsbuilder.preferenceCenter.block.MauticCategories.text'
               )}</label>
             </div>
           </div>
@@ -37,9 +37,9 @@ export default class PreferenceCenterBlocks {
       style: { padding: '50px' },
     });
 
-    this.blockManager.add('MySegment', {
+    this.blockManager.add('MauticSegment', {
       tagName: 'div',
-      label: Mautic.translate('grapesjsbuilder.preferenceCenter.block.mySegments.label'),
+      label: Mautic.translate('grapesjsbuilder.preferenceCenter.block.MauticSegments.label'),
       category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
       draggable: false,
       attributes: {
@@ -49,7 +49,7 @@ export default class PreferenceCenterBlocks {
           <div draggable="false">
             <div draggable="false">
               <label draggable="false">${Mautic.translate(
-                'grapesjsbuilder.preferenceCenter.block.mySegments.label'
+                'grapesjsbuilder.preferenceCenter.block.MauticSegments.label'
               )}</label>
             </div>
             <div draggable="false">
@@ -61,7 +61,7 @@ export default class PreferenceCenterBlocks {
                 draggable="false"
               />
               <label draggable="false">${Mautic.translate(
-                'grapesjsbuilder.preferenceCenter.block.mySegments.label'
+                'grapesjsbuilder.preferenceCenter.block.MauticSegments.text'
               )}</label>
             </div>
           </div>
@@ -138,15 +138,26 @@ export default class PreferenceCenterBlocks {
                 <td draggable="false">
                   <div id="frequency_email" class="text-left row" draggable="false">
                     <div draggable="false">
-                      <label draggable="false">${Mautic.translate(
-                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.do_not_send'
-                      )}</label>
-                      <input type="text" class="frequency form-control" draggable="false">
+                      <input type="number" min="0" class="frequency form-control" draggable="false">
                       <label class="fw-n frequency-label" draggable="false">${Mautic.translate(
                         'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.each'
                       )}</label>
                       <select class="form-control" draggable="false">
-                        <option value="" selected="selected" draggable="false"></option>
+                        <option value="" selected="selected" draggable="false">
+                            ${Mautic.translate(
+                              'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.days'
+                            )}
+                        </option>
+                        <option value="" draggable="false">
+                            ${Mautic.translate(
+                              'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.weeks'
+                            )}
+                        </option>
+                        <option value="" draggable="false">
+                            ${Mautic.translate(
+                              'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.months'
+                            )}
+                        </option>
                       </select>
                     </div>
                     <div draggable="false">
@@ -155,7 +166,7 @@ export default class PreferenceCenterBlocks {
                       )}</label>
                       <input type="date" class="form-control" draggable="false">
                       <label class="frequency-label fw-n" draggable="false">${Mautic.translate(
-                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.to'
+                        'grapesjsbuilder.preferenceCenter.block.channelFrequency.text.pause_to'
                       )}</label>
                       <input type="date" class="form-control" draggable="false">
                     </div>
@@ -187,21 +198,6 @@ export default class PreferenceCenterBlocks {
       style: { padding: '50px' },
     });
 
-    const style = `<style>
-            .button {
-              display:inline-block;
-              text-decoration:none;
-              border-color:#4e5d9d;
-              border-width:10px 20px;
-              border-style:solid;
-              -webkit-border-radius:3px;
-              -moz-border-radius:3px;
-              border-radius:3px;
-              background-color:#4e5d9d;
-              font-size:16px;
-              color:#ffffff;
-            }           
-          </style>`;
     this.blockManager.add('SavePreferences', {
       tagName: 'div',
       label: Mautic.translate('grapesjsbuilder.preferenceCenter.block.savePreferences.label'),
@@ -210,10 +206,9 @@ export default class PreferenceCenterBlocks {
         class: 'gjs-fonts gjs-f-button',
       },
       content: `
-        ${style}
         <div data-slot="saveprefsbutton">
           <a class="button btn btn-default btn-save" draggable="false">
-            ${Mautic.translate('grapesjsbuilder.preferenceCenter.block.savePreferences.link')}
+            ${Mautic.translate('grapesjsbuilder.preferenceCenter.block.savePreferences.text')}
           </a>
           <div style="clear: both"></div>
         </div>`,

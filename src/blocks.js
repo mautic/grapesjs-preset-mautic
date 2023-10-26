@@ -8,28 +8,40 @@ export default (editor, opts = {}) => {
   const bm = editor.BlockManager;
   const blocks = bm.getAll();
 
-  const mode = ContentService.getMode(editor);
+  // All block inside Blocks category
+  blocks.forEach((block) => {
+    block.set({
+      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel'),
+    });
+  });
 
-  if (mode === ContentService.modeEmailMjml) {
-    const blockMjml = new BlocksMjml(editor);
-    blockMjml.addBlocks();
-  }
+  // eslint-disable-next-line default-case
+  switch (ContentService.getMode(editor)) {
+    case ContentService.modePageHtml: {
+      const buttonBlock = new ButtonBlock(editor);
+      buttonBlock.addButtonBlock();
 
-  // a add button block for landing page
-  if (mode === ContentService.modePageHtml) {
-    const buttonBlock = new ButtonBlock(editor);
-    buttonBlock.addButtonBlock();
-
-    // check if page is for preference center
-    const isPreferenceCenter = ContentService.isPreferenceCenter();
-    if (isPreferenceCenter) {
-      const pcb = new PreferenceCenterBlocks(editor);
-      pcb.addPreferenceCenterBlock();
+      // Check if page is for preference center
+      const isPreferenceCenter = ContentService.isPreferenceCenter();
+      if (isPreferenceCenter) {
+        const pcb = new PreferenceCenterBlocks(editor);
+        pcb.addPreferenceCenterBlock();
+      }
+      break;
     }
-  } else {
-    // Add Dynamic Content block only for email modes
-    const dcb = new DynamicContentBlocks(editor, opts);
-    dcb.addDynamciContentBlock();
+    case ContentService.modeEmailMjml: {
+      const blockMjml = new BlocksMjml(editor);
+      blockMjml.addBlocks();
+
+      const dcb = new DynamicContentBlocks(editor, opts);
+      dcb.addDynamciContentBlock();
+      break;
+    }
+    case ContentService.modeEmailHtml: {
+      const dcb = new DynamicContentBlocks(editor, opts);
+      dcb.addDynamciContentBlock();
+      break;
+    }
   }
 
   // Add icon to mj-hero
@@ -42,61 +54,6 @@ export default (editor, opts = {}) => {
   // Delete mj-wrapper
   if (typeof bm.get('mj-wrapper') !== 'undefined') {
     bm.remove('mj-wrapper');
-  }
-
-  // All block inside Blocks category
-  blocks.forEach((block) => {
-    block.set({
-      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel'),
-    });
-  });
-
-  /*
-   * Blocks for Preference Center Category
-   */
-  // check if page is for preference center
-  if (ContentService.isPreferenceCenter()) {
-    if (typeof bm.get('MyCategories') !== 'undefined') {
-      bm.get('MyCategories').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('MySegment') !== 'undefined') {
-      bm.get('MySegment').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('PreferredChannel') !== 'undefined') {
-      bm.get('PreferredChannel').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('SuccessMessage') !== 'undefined') {
-      bm.get('SuccessMessage').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('ChannelFrequency') !== 'undefined') {
-      bm.get('ChannelFrequency').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('SavePreferences') !== 'undefined') {
-      bm.get('SavePreferences').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
-
-    if (typeof bm.get('UnsubscribeAll') !== 'undefined') {
-      bm.get('UnsubscribeAll').set({
-        category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
-      });
-    }
   }
 
   /*
