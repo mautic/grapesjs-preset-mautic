@@ -1,22 +1,24 @@
 /* eslint-disable no-else-return */
 import DynamicContentDomComponents from './dynamicContent/dynamicContent.domcomponents';
 import PreferenceCenterDomComponents from './preferenceCenter/preferenceCenter.domcomponents';
+import ContentService from './content.service';
 
 // https://grapesjs.com/docs/api/component.html
 export default (editor => {
   DynamicContentDomComponents.addDynamicContentType(editor);
-
+  const mode = ContentService.getMode(editor);
   if (mode === ContentService.modePageHtml) {
     const pcdc = new PreferenceCenterDomComponents(editor);
     pcdc.addPreferenceCenterType();
   }
-
   editor.DomComponents.addType('input', {
     isComponent: el => el.tagName == 'INPUT',
     model: {
       defaults: {
-        traits: [// Strings are automatically converted to text types
-        'name', // Same as: { type: 'text', name: 'name' }
+        traits: [
+        // Strings are automatically converted to text types
+        'name',
+        // Same as: { type: 'text', name: 'name' }
         'placeholder', {
           type: 'select',
           // Type of the trait

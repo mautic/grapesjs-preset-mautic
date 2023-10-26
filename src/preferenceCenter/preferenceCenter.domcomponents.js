@@ -27,8 +27,8 @@ export default class PreferenceCenterDomComponents {
     };
     const dc = this.editor.DomComponents;
     dc.addType('input', {
-      isComponent: function (e) {
-        return 'INPUT' == e.tagName;
+      isComponent(e) {
+        return e.tagName === 'INPUT';
       },
       model: {
         defaults: {
@@ -38,46 +38,46 @@ export default class PreferenceCenterDomComponents {
       },
       extendFnView: ['updateAttributes'],
       view: {
-        updateAttributes: function () {
+        updateAttributes() {
           this.el.setAttribute('autocomplete', 'off');
         },
       },
-    }),
-      dc.addType('checkbox', {
-        extend: 'input',
-        isComponent: function (e) {
-          return 'INPUT' == e.tagName && 'checkbox' == e.type;
+    });
+    dc.addType('checkbox', {
+      extend: 'input',
+      isComponent(e) {
+        return e.tagName === 'INPUT' && e.type === 'checkbox';
+      },
+      model: {
+        defaults: {
+          copyable: !1,
+          attributes: { type: 'checkbox' },
+          traits: [idTrait, nameTrait, valueTrait, requiredTrait, checkedTrait],
         },
-        model: {
-          defaults: {
-            copyable: !1,
-            attributes: { type: 'checkbox' },
-            traits: [idTrait, nameTrait, valueTrait, requiredTrait, checkedTrait],
+      },
+      view: {
+        events: {
+          click(e) {
+            return e.preventDefault();
           },
         },
-        view: {
-          events: {
-            click: function (e) {
-              return e.preventDefault();
-            },
-          },
-          init: function () {
-            this.listenTo(this.model, 'change:attributes:checked', this.handleChecked);
-          },
-          handleChecked: function () {
-            this.el.checked = !!this.model.get('attributes').checked;
-          },
+        init() {
+          this.listenTo(this.model, 'change:attributes:checked', this.handleChecked);
         },
-      }),
-      dc.addType('label', {
-        extend: 'text',
-        isComponent: function (e) {
-          return 'LABEL' == e.tagName;
+        handleChecked() {
+          this.el.checked = !!this.model.get('attributes').checked;
         },
-        model: { defaults: { tagName: 'label', components: 'Label' } },
-      });
+      },
+    });
+    dc.addType('label', {
+      extend: 'text',
+      isComponent(e) {
+        return e.tagName === 'LABEL';
+      },
+      model: { defaults: { tagName: 'label', components: 'Label' } },
+    });
     dc.addType('option', {
-      isComponent: (el) => el.tagName == 'OPTION',
+      isComponent: (el) => el.tagName === 'OPTION',
 
       model: {
         defaults: {
@@ -98,15 +98,12 @@ export default class PreferenceCenterDomComponents {
 
     dc.addType('select', {
       extend: 'input',
-      isComponent: (el) => el.tagName == 'SELECT',
+      isComponent: (el) => el.tagName === 'SELECT',
 
       model: {
         defaults: {
           tagName: 'select',
-          components: [
-            createOption('email', 'Email'),
-            //createOption('opt2', 'Option 2'),
-          ],
+          components: [createOption('email', 'Email')],
           traits: [
             nameTrait,
             {
@@ -144,81 +141,30 @@ export default class PreferenceCenterDomComponents {
             },
             droppable: false, // Can't drop other elements inside
             copyable: false, // Do not allow to duplicate the component
-            script: function () {
-              var input = this;
-              var initDateRange = function () {
-                var input = this;
+            script() {
+              const initDateRange = function () {
+                const input = this;
                 const options = {
                   singleDatePicker: true,
                   showDropdowns: true,
                 };
+                // eslint-disable-next-line no-undef
                 $(input).daterangepicker(options);
               };
 
-              if (
-                typeof daterangepicker == 'undefined' ||
-                typeof jQuery == 'undefined' ||
-                typeof moment == 'undefined'
-              ) {
-                if (typeof jQuery == 'undefined') {
-                  var jquery = document.createElement('script');
-                  jquery.src = '//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js';
-                  document.body.appendChild(jquery);
-
-                  jquery.onload = function () {
-                    loadMoment();
-                  };
-                } else {
-                  loadMoment();
-                }
-                function loadMoment() {
-                  if (typeof moment == 'undefined') {
-                    var moment = document.createElement('script');
-                    moment.src = '//cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js';
-                    document.body.appendChild(moment);
-
-                    moment.onload = function () {
-                      loadDatePicker();
-                    };
-                  } else {
-                    loadDatePicker();
-                  }
-                }
-                function loadDatePicker() {
-                  if (typeof $ == 'undefined') {
-                    window.$ = jQuery;
-                  }
-                  var link = document.createElement('link');
-                  link.rel = 'stylesheet';
-                  link.href =
-                    '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.css';
-                  document.body.appendChild(link);
-
-                  var daterangepicker = document.createElement('script');
-                  daterangepicker.src =
-                    '//cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/3.0.5/daterangepicker.min.js';
-                  document.body.appendChild(daterangepicker);
-
-                  daterangepicker.onload = initDateRange;
-                }
-              } else {
-                // console.log("all libs present");
-                initDateRange();
-              }
+              initDateRange();
             },
           },
         },
         {
           isComponent(el) {
-            var dateType;
-            if (el.getAttribute && el.getAttribute('data-slot') === 'date') {
-              dateType = true;
-            } else {
-              dateType = false;
-            }
-            if (el.tagName == 'INPUT' && dateType) {
+            const dateType = el.getAttribute && el.getAttribute('data-slot') === 'date';
+
+            if (el.tagName === 'INPUT' && dateType) {
               return { type: 'date' };
             }
+
+            return {};
           },
         }
       ),

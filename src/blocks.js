@@ -55,7 +55,7 @@ export default (editor, opts = {}) => {
    * Blocks for Preference Center Category
    */
   // check if page is for preference center
-  if (mQuery('#page_isPreferenceCenter_1').is(':checked')) {
+  if (ContentService.isPreferenceCenter()) {
     if (typeof bm.get('MyCategories') !== 'undefined') {
       bm.get('MyCategories').set({
         category: Mautic.translate('grapesjsbuilder.preferenceCenterLabel'),
