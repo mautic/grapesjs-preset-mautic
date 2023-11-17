@@ -9,6 +9,9 @@ export default class ContentService {
     }
     return ContentService.getMode(editor) === ContentService.modeEmailMjml;
   }
+  static isPreferenceCenter() {
+    return mQuery('#page_isPreferenceCenter_1').is(':checked');
+  }
   static getMode(editor) {
     const cfg = editor.getConfig();
     if (!cfg.pluginsOpts || !cfg.pluginsOpts.grapesjsmautic || !cfg.pluginsOpts.grapesjsmautic.mode) {

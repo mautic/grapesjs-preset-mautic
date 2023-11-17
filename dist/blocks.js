@@ -2,23 +2,47 @@ import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
 import ContentService from './content.service';
 import ButtonBlock from './buttonBlock';
 import BlocksMjml from './blocks/blocks.mjml';
+import PreferenceCenterBlocks from './preferenceCenter/preferenceCenter.blocks';
 export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
   const blocks = bm.getAll();
-  const mode = ContentService.getMode(editor);
-  if (mode === ContentService.modeEmailMjml) {
-    const blockMjml = new BlocksMjml(editor);
-    blockMjml.addBlocks();
-  }
 
-  // a add button block for landing page
-  if (mode === ContentService.modePageHtml) {
-    const buttonBlock = new ButtonBlock(editor);
-    buttonBlock.addButtonBlock();
-  } else {
-    // Add Dynamic Content block only for email modes
-    const dcb = new DynamicContentBlocks(editor, opts);
-    dcb.addDynamciContentBlock();
+  // All block inside Blocks category
+  blocks.forEach(block => {
+    block.set({
+      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel')
+    });
+  });
+
+  // eslint-disable-next-line default-case
+  switch (ContentService.getMode(editor)) {
+    case ContentService.modePageHtml:
+      {
+        const buttonBlock = new ButtonBlock(editor);
+        buttonBlock.addButtonBlock();
+
+        // Check if page is for preference center
+        const isPreferenceCenter = ContentService.isPreferenceCenter();
+        if (isPreferenceCenter) {
+          const pcb = new PreferenceCenterBlocks(editor);
+          pcb.addPreferenceCenterBlocks();
+        }
+        break;
+      }
+    case ContentService.modeEmailMjml:
+      {
+        const blockMjml = new BlocksMjml(editor);
+        blockMjml.addBlocks();
+        const dcb = new DynamicContentBlocks(editor, opts);
+        dcb.addDynamciContentBlock();
+        break;
+      }
+    case ContentService.modeEmailHtml:
+      {
+        const dcb = new DynamicContentBlocks(editor, opts);
+        dcb.addDynamciContentBlock();
+        break;
+      }
   }
 
   // Add icon to mj-hero
@@ -34,13 +58,6 @@ export default ((editor, opts = {}) => {
   if (typeof bm.get('mj-wrapper') !== 'undefined') {
     bm.remove('mj-wrapper');
   }
-
-  // All block inside Blocks category
-  blocks.forEach(block => {
-    block.set({
-      category: Mautic.translate('grapesjsbuilder.categoryBlockLabel')
-    });
-  });
 
   /*
    * Custom block inside Sections category
