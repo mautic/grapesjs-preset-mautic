@@ -24,6 +24,7 @@ export default class PreferenceCenterDomComponents {
           ...baseModel.prototype.defaults,
           name,
           tagName: 'div',
+          draggable: '[data-gjs-type=cell]',
           droppable: false,
           editable: false,
           stylable: false,

@@ -25,7 +25,7 @@ export default (editor, opts = {}) => {
       const isPreferenceCenter = ContentService.isPreferenceCenter();
       if (isPreferenceCenter) {
         const pcb = new PreferenceCenterBlocks(editor);
-        pcb.addPreferenceCenterBlock();
+        pcb.addPreferenceCenterBlocks();
       }
       break;
     }
