@@ -8,12 +8,13 @@ export default class MjmlService {
   static getOriginalContentMjml() {
     return mQuery('textarea.builder-mjml').val();
   }
-
   /**
    * Get the editors mjml and transform it to html
    * @param {Grapesjs Editor} editor
    * @returns string
    */
+
+
   static getEditorHtmlContent(editor) {
     // Try catch for mjml parser error
     try {
@@ -26,32 +27,37 @@ export default class MjmlService {
       console.warn(error.message);
       alert('Errors inside your template. Template will not be saved.');
     }
+
     return '';
   }
-
   /**
    * Get the editors mjml
    * @param {Grapesjs Editor} editor
    * @returns string
    */
+
+
   static getEditorMjmlContent(editor) {
     // cleanId: Remove unnecessary IDs (eg. those created automatically)
     return editor.getHtml({
       cleanId: true
     }).trim();
   }
-
   /**
    * Transform MJML to HTML
    * @todo show validation errors in the UI
    * @returns string
    */
+
+
   static mjmlToHtml(mjml, endpoint = '') {
     let html = '';
+
     try {
       if (typeof mjml !== 'string' || !mjml.includes('<mjml>')) {
         throw new Error('No valid MJML provided');
       }
+
       if (endpoint !== '') {
         html = MjmlService.mjmlToHtmlViaEndpoint(mjml, endpoint);
       } else {
@@ -65,13 +71,15 @@ export default class MjmlService {
     } catch (error) {
       console.warn(error);
     }
+
     return html;
   }
-
   /**
    * Transform MJML to HTML via endpoint
    * @returns string
    */
+
+
   static mjmlToHtmlViaEndpoint(mjml, endpoint) {
     const xmlHttpRequest = new XMLHttpRequest();
     xmlHttpRequest.open('POST', endpoint, false);
@@ -81,4 +89,5 @@ export default class MjmlService {
     }));
     return xmlHttpRequest.responseText ? JSON.parse(xmlHttpRequest.responseText) : '';
   }
+
 }
