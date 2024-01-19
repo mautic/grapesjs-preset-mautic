@@ -1,6 +1,5 @@
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 import ContentService from '../content.service';
 import MjmlService from '../mjml/mjml.service';
 import ButtonCloseCommands from './buttonClose.command';
@@ -18,20 +17,23 @@ export default class ButtonApplyCommand {
    */
   static applyForm(editor, sender) {
     editor.runCommand('preset-mautic:dynamic-content-components-to-tokens');
+
     if (ContentService.isMjmlMode(editor)) {
       const htmlCode = MjmlService.getEditorHtmlContent(editor);
       const mjmlCode = MjmlService.getEditorMjmlContent(editor);
+
       if (!htmlCode || !mjmlCode) {
         throw new Error('Could not generate html from MJML');
       }
+
       ButtonCloseCommands.returnContentToTextarea(editor, htmlCode, mjmlCode);
     } else {
       const html = ContentService.getEditorHtmlContent(editor);
       ButtonCloseCommands.returnContentToTextarea(editor, html);
     }
+
     ButtonApplyCommand.postForm(editor, sender);
   }
-
   /**
    * Send POST request for sending the form, get and handle response
    * Use the global Mautic postForm function
@@ -39,6 +41,8 @@ export default class ButtonApplyCommand {
    * @param editor
    * @param sender
    */
+
+
   static postForm(editor, sender) {
     const mauticForm = ButtonsService.getMauticForm();
     sender.set('className', 'fa fa-spinner fa-spin');
@@ -47,7 +51,6 @@ export default class ButtonApplyCommand {
     Mautic.postForm(mauticForm, ButtonApplyCommand.postFormResponse.bind(this, editor, sender));
     Mautic.inBuilderSubmissionOff();
   }
-
   /**
    * Get and handle response
    * Use the global Mautic functions
@@ -56,8 +59,11 @@ export default class ButtonApplyCommand {
    * @param sender
    * @param response
    */
+
+
   static postFormResponse(editor, sender, response) {
     const mauticForm = ButtonsService.getMauticForm();
+
     if (response.validationError !== null) {
       const title = Mautic.translate('grapesjsbuilder.panelsViewsCommandModalTitleError');
       ButtonApplyCommand.showModal(editor, title, response.validationError);
@@ -65,20 +71,19 @@ export default class ButtonApplyCommand {
       if (response.route) {
         // update URL in address bar
         MauticVars.manualStateChange = false;
-        History.pushState(null, 'Mautic', response.route);
+        History.pushState(null, 'Mautic', response.route); // update Title
 
-        // update Title
         Mautic.generatePageTitle(response.route);
-      }
+      } // update form action
 
-      // update form action
+
       if (mauticForm[0].baseURI !== mauticForm[0].action) {
         mauticForm[0].action = mauticForm[0].baseURI;
       }
     }
+
     sender.set('className', 'fa fa-check');
   }
-
   /**
    * Create modal to show information about saving email
    *
@@ -86,6 +91,8 @@ export default class ButtonApplyCommand {
    * @param title
    * @param text
    */
+
+
   static showModal(editor, title, text) {
     const modal = editor.Modal;
     const body = document.createElement('div');
@@ -98,9 +105,11 @@ export default class ButtonApplyCommand {
     body.appendChild(content);
     btnClose.classList.add('btn', 'btn-lg', 'btn-default', 'text-primary');
     btnClose.innerText = 'Close';
+
     btnClose.onclick = () => {
       modal.close();
     };
+
     footer.classList.add('panel-footer', 'text-center');
     footer.appendChild(btnClose);
     body.appendChild(footer);
@@ -111,30 +120,38 @@ export default class ButtonApplyCommand {
       }
     });
   }
-
   /**
    * Set a default value for the required form items.
    * The email form has subject and internal name fields as a required.
    * The page form has a title field as a required.
    */
+
+
   static setDefaultValues(editor) {
     const mode = ContentService.getMode(editor);
+
     if (mode === ContentService.modeEmailHtml || mode === ContentService.modeEmailMjml) {
       let formEmailSubject = ButtonsService.getElementValue('emailform_subject');
       let formEmailName = ButtonsService.getElementValue('emailform_name');
+
       if (formEmailSubject.lenght === 0) {
         formEmailSubject = ButtonsService.getDefaultValue(mode.split('-')[0]);
       }
+
       if (formEmailName.length === 0) {
         formEmailName = ButtonsService.getDefaultValue(mode.split('-')[0]);
       }
     }
+
     if (mode === ContentService.modePageHtml) {
       let formPageTitle = ButtonsService.getElementValue('page_title');
+
       if (formPageTitle.length === 0) {
         formPageTitle = ButtonsService.getDefaultValue(mode.split('-')[0]);
       }
     }
   }
+
 }
+
 _defineProperty(ButtonApplyCommand, "name", 'preset-mautic:apply-form');

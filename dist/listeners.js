@@ -1,5 +1,4 @@
-export default (() => {
-  // @todo is this needed? why do we copy the original content?
+export default (() => {// @todo is this needed? why do we copy the original content?
   // this.editor.on('run:mautic-editor-email-mjml-close:before', () => {
   //   mQuery('textarea.builder-html').val(this.getBody());
   // });
