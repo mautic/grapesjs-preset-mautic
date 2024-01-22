@@ -31,8 +31,8 @@ export default class DynamicContentDomComponents {
       },
 
       /**
-        * Initilize the component
-        */
+       * Initilize the component
+       */
       init() {
         // link component to the corresponding html store item
         this.em.get('Commands').run('preset-mautic:link-component-to-store-item', {
