@@ -20,11 +20,18 @@ export default class DynamicContentCommands {
 
   stopDynamicContentPopup() {
     // Destroy Dynamic Content editors and write the contents to the textarea
-    for (const name of Object.keys(CKEDITOR.instances)) {
-      if (name.includes('dynamicContent')) {
-        this.logger.debug(`Destroying Dynamic Content editor: ${name}`);
-        CKEDITOR.instances[name].destroy(false);
-      }
+    var logger = this.logger;
+
+    if (ckEditors != undefined && ckEditors.size > 0) {
+      ckEditors.forEach(function (value, key, map) {
+        const name = key.id;
+
+        if (name.includes('dynamicContent')) {
+          logger.debug(`Destroying Dynamic Content editor: ${name}`);
+          map.get(key).destroy();
+          ckEditors.delete(key);
+        }
+      });
     }
 
     this.dcService.updateDcStoreItem();
