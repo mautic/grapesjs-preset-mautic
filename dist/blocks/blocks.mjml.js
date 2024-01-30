@@ -1,13 +1,15 @@
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 export default class BlocksMjml {
   constructor(editor) {
     _defineProperty(this, "blockManager", void 0);
+
     _defineProperty(this, "editor", void 0);
+
     this.editor = editor;
     this.blockManager = editor.BlockManager;
   }
+
   addBlocks() {
     const sections37 = `<mj-column width="30%"><mj-text>Content 1</mj-text></mj-column>
         <mj-column width="70%"><mj-text>Content 2</mj-text></mj-column>`;
@@ -85,4 +87,5 @@ export default class BlocksMjml {
       content: `<mj-section>${listItem}</mj-section>`
     });
   }
+
 }
