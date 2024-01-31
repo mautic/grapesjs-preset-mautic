@@ -23,6 +23,7 @@ export default class ButtonService {
 
     return field.value;
   }
+
   /**
    * Set a form fields value by ID
    * @param elementId
@@ -35,7 +36,6 @@ export default class ButtonService {
     }
     field.value = value;
   }
-
   /**
    * Get the email|page id to open preview
    *
