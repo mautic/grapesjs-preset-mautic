@@ -7,10 +7,6 @@ import ButtonCloseCommands from './buttonClose.command';
 import ButtonsService from './buttons.service';
 export default class ButtonApplyCommand {
   /**
-   * The command name
-   */
-
-  /**
    * Command saves the email into Database
    *
    * @param editor
@@ -65,7 +61,7 @@ export default class ButtonApplyCommand {
       if (response.route) {
         // update URL in address bar
         MauticVars.manualStateChange = false;
-        History.pushState(null, 'Mautic', response.route);
+        history.pushState(null, 'Mautic', response.route);
 
         // update Title
         Mautic.generatePageTitle(response.route);
@@ -122,19 +118,25 @@ export default class ButtonApplyCommand {
     if (mode === ContentService.modeEmailHtml || mode === ContentService.modeEmailMjml) {
       let formEmailSubject = ButtonsService.getElementValue('emailform_subject');
       let formEmailName = ButtonsService.getElementValue('emailform_name');
-      if (formEmailSubject.lenght === 0) {
+      if (formEmailSubject.length === 0) {
         formEmailSubject = ButtonsService.getDefaultValue(mode.split('-')[0]);
+        ButtonsService.setElementValue('emailform_subject', formEmailSubject);
       }
       if (formEmailName.length === 0) {
         formEmailName = ButtonsService.getDefaultValue(mode.split('-')[0]);
+        ButtonsService.setElementValue('emailform_name', formEmailName);
       }
     }
     if (mode === ContentService.modePageHtml) {
       let formPageTitle = ButtonsService.getElementValue('page_title');
       if (formPageTitle.length === 0) {
         formPageTitle = ButtonsService.getDefaultValue(mode.split('-')[0]);
+        ButtonsService.setElementValue('page_title', formPageTitle);
       }
     }
   }
 }
+/**
+ * The command name
+ */
 _defineProperty(ButtonApplyCommand, "name", 'preset-mautic:apply-form');
