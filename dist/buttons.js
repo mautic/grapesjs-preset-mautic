@@ -140,20 +140,29 @@ export default ((editor, opts = {}) => {
 
       const traitsSector = $('<div class="gjs-sm-sector no-select">' + '<div class="gjs-sm-title"><span class="icon-settings fa fa-cog"></span> Settings</div>' + '<div class="gjs-sm-properties" style="display: none;"></div></div>');
       const traitsProps = traitsSector.find('.gjs-sm-properties');
-      traitsProps.append($('.gjs-trt-traits'));
-      $('.gjs-sm-sectors').before(traitsSector);
-      traitsSector.find('.gjs-sm-title').on('click', () => {
-        const traitStyle = traitsProps.get(0).style;
-        const hidden = traitStyle.display === 'none';
+      const traits = $('.gjs-trt-traits');
 
-        if (hidden) {
-          traitStyle.display = 'block';
-        } else {
-          traitStyle.display = 'none';
+      if (traitsProps.length && traits.length) {
+        traitsProps.append(traits);
+        const sectors = $('.gjs-sm-sectors'); // we can only show the Settings, if something in the template is selected
+        // otherwise we're trying to append stuff to nothing and get errors
+
+        if (sectors.length) {
+          sectors.before(traitsSector);
+          traitsSector.find('.gjs-sm-title').on('click', () => {
+            const traitStyle = traitsProps.get(0).style;
+            const hidden = traitStyle.display === 'none';
+
+            if (hidden) {
+              traitStyle.display = 'block';
+            } else {
+              traitStyle.display = 'none';
+            }
+          }); // Open settings
+
+          traitsProps.get(0).style.display = 'block';
         }
-      }); // Open settings
-
-      traitsProps.get(0).style.display = 'block';
+      }
     } // Open the default panel
 
 

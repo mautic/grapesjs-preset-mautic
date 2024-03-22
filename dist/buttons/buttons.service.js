@@ -23,17 +23,20 @@ export default class ButtonService {
 
     return field.value;
   }
-
   /**
    * Set a form fields value by ID
    * @param elementId
    * @param value
    */
+
+
   static setElementValue(elementId, value) {
     const field = document.getElementById(elementId);
+
     if (!field) {
       throw new Error(`Element '${elementId}' not found`);
     }
+
     field.value = value;
   }
   /**
