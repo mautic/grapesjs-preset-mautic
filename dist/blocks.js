@@ -1,6 +1,7 @@
 import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
 import ContentService from './content.service';
 import ButtonBlock from './buttonBlock';
+import PanelsMjml from './panels/panels.mjml';
 import BlocksMjml from './blocks/blocks.mjml';
 export default ((editor, opts = {}) => {
   const bm = editor.BlockManager;
@@ -8,7 +9,9 @@ export default ((editor, opts = {}) => {
   const mode = ContentService.getMode(editor);
 
   if (mode === ContentService.modeEmailMjml) {
+    const panelMjml = new PanelsMjml(editor);
     const blockMjml = new BlocksMjml(editor);
+    panelMjml.restylePanels();
     blockMjml.addBlocks();
   } // a add button block for landing page
 
