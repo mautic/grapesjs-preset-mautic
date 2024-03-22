@@ -140,12 +140,12 @@ export default ((editor, opts = {}) => {
 
       const traitsSector = $('<div class="gjs-sm-sector no-select">' + '<div class="gjs-sm-title"><span class="icon-settings fa fa-cog"></span> Settings</div>' + '<div class="gjs-sm-properties" style="display: none;"></div></div>');
       const traitsProps = traitsSector.find('.gjs-sm-properties');
-      const traits = $('.gjs-trt-traits');
+      const traits = $('.gjs-trt-traits'); // we can only show the Settings, if something in the template is selected
+      // otherwise we're going to get an error about trying to append a non-existing node
 
       if (traitsProps.length && traits.length) {
         traitsProps.append(traits);
-        const sectors = $('.gjs-sm-sectors'); // we can only show the Settings, if something in the template is selected
-        // otherwise we're trying to append stuff to nothing and get errors
+        const sectors = $('.gjs-sm-sectors');
 
         if (sectors.length) {
           sectors.before(traitsSector);
