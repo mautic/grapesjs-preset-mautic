@@ -125,6 +125,9 @@ export default ((editor, opts = {}) => {
 
 
     if (!opts.combineSettingsAndSm) {
+      // Add Settings Sector
+      const traitsSector = $('<div class="gjs-sm-sector no-select">' + '<div class="gjs-sm-title"><span class="icon-settings fa fa-cog"></span> Settings</div>' + '<div class="gjs-sm-properties" style="display: none;"></div></div>');
+      const traitsProps = traitsSector.find('.gjs-sm-properties');
       const openTmBtn = pm.getButton('views', 'open-tm');
       const openSm = pm.getButton('views', 'open-sm');
 
@@ -136,32 +139,24 @@ export default ((editor, opts = {}) => {
         openSm.set('active', 1);
       }
 
-      pm.removeButton('views', 'open-tm'); // Add Settings Sector
+      pm.removeButton('views', 'open-tm');
+      traitsProps.append($('.gjs-traits-cs')); // we can only show the Settings, if something in the template is selected
+      // otherwise we're trying to append stuff to nothing and get errors
 
-      const traitsSector = $('<div class="gjs-sm-sector no-select">' + '<div class="gjs-sm-title"><span class="icon-settings fa fa-cog"></span> Settings</div>' + '<div class="gjs-sm-properties" style="display: none;"></div></div>');
-      const traitsProps = traitsSector.find('.gjs-sm-properties');
-      const traits = $('.gjs-trt-traits'); // we can only show the Settings, if something in the template is selected
-      // otherwise we're going to get an error about trying to append a non-existing node
+      if ($('.gjs-sm-sectors').length) {
+        $('.gjs-sm-sectors').before(traitsSector);
+        traitsSector.find('.gjs-sm-title').on('click', () => {
+          const traitStyle = traitsProps.get(0).style;
+          const hidden = traitStyle.display === 'none';
 
-      if (traitsProps.length && traits.length) {
-        traitsProps.append(traits);
-        const sectors = $('.gjs-sm-sectors');
+          if (hidden) {
+            traitStyle.display = 'block';
+          } else {
+            traitStyle.display = 'none';
+          }
+        }); // Open settings
 
-        if (sectors.length) {
-          sectors.before(traitsSector);
-          traitsSector.find('.gjs-sm-title').on('click', () => {
-            const traitStyle = traitsProps.get(0).style;
-            const hidden = traitStyle.display === 'none';
-
-            if (hidden) {
-              traitStyle.display = 'block';
-            } else {
-              traitStyle.display = 'none';
-            }
-          }); // Open settings
-
-          traitsProps.get(0).style.display = 'block';
-        }
+        traitsProps.get(0).style.display = 'block';
       }
     } // Open the default panel
 
