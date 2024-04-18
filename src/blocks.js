@@ -1,6 +1,7 @@
 import DynamicContentBlocks from './dynamicContent/dynamicContent.blocks';
 import ContentService from './content.service';
 import ButtonBlock from './buttonBlock';
+import PanelsMjml from './panels/panels.mjml';
 import BlocksMjml from './blocks/blocks.mjml';
 
 export default (editor, opts = {}) => {
@@ -10,7 +11,9 @@ export default (editor, opts = {}) => {
   const mode = ContentService.getMode(editor);
 
   if (mode === ContentService.modeEmailMjml) {
+    const panelMjml = new PanelsMjml(editor);
     const blockMjml = new BlocksMjml(editor);
+    panelMjml.restylePanels();
     blockMjml.addBlocks();
   }
 
@@ -21,7 +24,7 @@ export default (editor, opts = {}) => {
   } else {
     // Add Dynamic Content block only for email modes
     const dcb = new DynamicContentBlocks(editor, opts);
-    dcb.addDynamciContentBlock();
+    dcb.addDynamicContentBlock();
   }
 
   // Add icon to mj-hero
