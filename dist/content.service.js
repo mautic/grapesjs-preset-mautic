@@ -1,22 +1,24 @@
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return typeof key === "symbol" ? key : String(key); }
-function _toPrimitive(input, hint) { if (typeof input !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (typeof res !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 import Logger from './logger';
 export default class ContentService {
   static isMjmlMode(editor) {
     if (!editor) {
       throw new Error('editor is required.');
     }
+
     return ContentService.getMode(editor) === ContentService.modeEmailMjml;
   }
+
   static getMode(editor) {
     const cfg = editor.getConfig();
+
     if (!cfg.pluginsOpts || !cfg.pluginsOpts.grapesjsmautic || !cfg.pluginsOpts.grapesjsmautic.mode) {
       throw new Error('Wrong Mautic Grapesjs mode');
     }
+
     return cfg.pluginsOpts.grapesjsmautic.mode;
   }
-
   /**
    * Get the current Canvas content as complete HTML document:
    * Combine original doctype, header, editor styles and content
@@ -24,64 +26,68 @@ export default class ContentService {
    * @param {GrapesJs Editor} editor
    * @returns HTMLDocument
    */
+
+
   static getCanvasAsHtmlDocument(editor) {
     const parser = new DOMParser();
-    const logger = new Logger(editor);
+    const logger = new Logger(editor); // get original doctype, header and add it to the html
 
-    // get original doctype, header and add it to the html
     const originalContent = ContentService.getOriginalContentHtml();
     const doctype = ContentService.serializeDoctype(originalContent.doctype);
-
     /**
      * Sanitize the content. This updates the originalContent variable directly
      * (as it's passed by reference), so we don't need to re-assign anything here
      */
+
     Mautic.sanitizeHtmlBeforeSave(mQuery(originalContent));
     const htmlCombined = `${doctype}<html>${editor.getHtml()}<style>${editor.getCss({
       avoidProtected: true
-    })}</style></html>`;
+    })}</style></html>`; // get a DocumentHTML from the string
 
-    // get a DocumentHTML from the string
-    const htmlDocument = parser.parseFromString(htmlCombined, 'text/html');
+    const htmlDocument = parser.parseFromString(htmlCombined, 'text/html'); // if no header is set on the canvas, replace it with existing from theme
 
-    // if no header is set on the canvas, replace it with existing from theme
     if (!htmlDocument.head.innerHTML && originalContent.head.innerHTML) {
       logger.debug('Set head based on the original content', {
         head: originalContent.head.innerHTML
       });
       htmlDocument.head.innerHTML = originalContent.head.innerHTML;
     }
+
     return htmlDocument;
   }
-
   /**
    * Get complete current html. Including doctype and original header.
    * @returns string
    */
+
+
   static getEditorHtmlContent(editor) {
     if (!editor) {
       throw new Error('Editor is required.');
     }
+
     const contentDocument = ContentService.getCanvasAsHtmlDocument(editor);
+
     if (!contentDocument || !contentDocument.body) {
       throw new Error('No html content found');
     }
+
     return ContentService.serializeHtmlDocument(contentDocument);
   }
-
   /**
    * Serialize a DocumentHTML Object to a <html> string
    * @param {DocumentHTML} contentDocument
    */
+
+
   static serializeHtmlDocument(contentDocument) {
     if (!contentDocument || !(contentDocument instanceof HTMLDocument)) {
       throw new Error('No Html Document');
-    }
+    } // @todo add the lang parameter. E.g. <html lang="de-DE">
 
-    // @todo add the lang parameter. E.g. <html lang="de-DE">
+
     return `${ContentService.serializeDoctype(contentDocument.doctype)}<html>${contentDocument.head.outerHTML}${contentDocument.body.outerHTML}</html>`;
   }
-
   /**
    * Returns the correct string for valid (HTML5) doctypes, eg:
    * <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
@@ -89,40 +95,50 @@ export default class ContentService {
    * @param {DocumentType}
    * @returns string
    */
+
+
   static serializeDoctype(doctype) {
     if (!doctype) {
       return '';
     }
+
     return new XMLSerializer().serializeToString(doctype);
   }
-
   /**
    * Get the selected themes original or the users last saved
    * content from the db. Loaded via Mautic PHP into the textarea.
    * @returns HTMLDocument
    */
+
+
   static getOriginalContentHtml() {
     // Parse HTML theme/template
     const parser = new DOMParser();
     const textareaHtml = mQuery('textarea.builder-html');
     const doc = parser.parseFromString(textareaHtml.val(), 'text/html');
+
     if (!doc.body.innerHTML || !doc.head.innerHTML) {
       throw new Error('No valid HTML template found');
     }
+
     return doc;
   }
-
   /**
    * Extract all stylesheets from the template <head>
    * @todo use DocumentHTML Styles directly
    */
+
+
   static getStyles() {
     const content = ContentService.getOriginalContentHtml();
+
     if (!content.head) {
       return [];
     }
+
     const links = content.head.querySelectorAll('link');
     const styles = [];
+
     if (links) {
       links.forEach(link => {
         if (link && link.rel === 'stylesheet') {
@@ -130,9 +146,14 @@ export default class ContentService {
         }
       });
     }
+
     return styles;
   }
+
 }
+
 _defineProperty(ContentService, "modeEmailHtml", 'email-html');
+
 _defineProperty(ContentService, "modeEmailMjml", 'email-mjml');
+
 _defineProperty(ContentService, "modePageHtml", 'page-html');
