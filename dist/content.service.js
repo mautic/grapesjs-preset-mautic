@@ -39,8 +39,20 @@ export default class ContentService {
      * (as it's passed by reference), so we don't need to re-assign anything here
      */
 
-    Mautic.sanitizeHtmlBeforeSave(mQuery(originalContent));
-    const htmlCombined = `${doctype}<html>${editor.getHtml()}<style>${editor.getCss({
+    Mautic.sanitizeHtmlBeforeSave(mQuery(originalContent)); // Get the HTML content from editor - need to extract body content only to avoid
+    // duplicating head content when using code edit mode
+
+    const editorHtml = editor.getHtml();
+    let bodyContent = editorHtml; // Parse the editor HTML to extract only body content
+    // This handles the case where code edit mode might have loaded full HTML documents
+
+    const tempDoc = parser.parseFromString(`<html><body>${editorHtml}</body></html>`, 'text/html');
+
+    if (tempDoc.body) {
+      bodyContent = tempDoc.body.innerHTML;
+    }
+
+    const htmlCombined = `${doctype}<html><head></head><body>${bodyContent}</body><style>${editor.getCss({
       avoidProtected: true
     })}</style></html>`; // get a DocumentHTML from the string
 
