@@ -1,114 +1,180 @@
 import ContentService from '../content.service';
 import DynamicContentService from './dynamicContent.service';
 
-export default class DynamicContentDomComponents {
-  dcService;
+const DC_TYPE = 'dynamic-content';
+const DC_SLOT = 'dynamicContent';
+const TOOLBAR_ID = 'toolbar-dynamic-content';
+const OPEN_COMMAND = 'preset-mautic:dynamic-content-open';
+const LINK_COMMAND = 'preset-mautic:link-component-to-store-item';
 
+function isDynamicContentComponent(el) {
+  if (typeof el.getAttribute !== 'undefined' && el.getAttribute('data-slot') === DC_SLOT) {
+    return {
+      type: DC_TYPE,
+    };
+  }
+  return false;
+}
+
+function addToolbarAndLink(component) {
+  component.em.get('Commands').run(LINK_COMMAND, { component });
+
+  const toolbar = component.get('toolbar') || [];
+
+  if (!toolbar.some((item) => item.id === TOOLBAR_ID)) {
+    toolbar.unshift({
+      id: TOOLBAR_ID,
+      command: OPEN_COMMAND,
+      attributes: { class: 'fa fa-pencil-square-o' },
+    });
+  }
+
+  component.set('toolbar', toolbar);
+}
+
+function renderDynamicContent(editor, model, renderContent, loggerContext = 'DC: Updated view') {
+  const dcService = new DynamicContentService(editor);
+  const dynamicContentId = DynamicContentService.getDataParamDecid(model);
+  const dcItem = dcService.getStoreItem(dynamicContentId);
+
+  if (dcItem) {
+    renderContent(dcItem.content);
+    dcService.logger.debug(loggerContext, dcItem);
+  }
+}
+
+export default class DynamicContentDomComponents {
   static addDynamicContentType(editor) {
     const dc = editor.DomComponents;
-    const baseTypeName = ContentService.isMjmlMode(editor) ? 'mj-text' : 'text';
-    const tagName = ContentService.isMjmlMode(editor) ? 'mj-text' : 'div';
-    const baseType = dc.getType(baseTypeName);
-    const baseModel = baseType.model;
+    const isMjml = ContentService.isMjmlMode(editor);
 
-    const dynamicContentModel = {
-      name: 'Dynamic Content',
-      tagName,
-      draggable: '[data-gjs-type=cell],[data-gjs-type=mj-column]',
-      droppable: false,
-      editable: false,
-      stylable: false,
-      propagate: ['droppable', 'editable'],
-      style: { ...baseModel.prototype.defaults['style-default'], ...{ display: 'block' } },
-      attributes: {
-        'data-gjs-type': 'dynamic-content', // Type for GrapesJS
-        'data-slot': 'dynamicContent', // used to find the DC component on the canvas for e.g. token transformation
-      },
-    };
+    if (isMjml) {
+      const baseType = dc.getType('mj-text');
+      const baseModel = baseType.model;
 
-    const model = {
-      defaults: { ...baseModel.prototype.defaults, ...dynamicContentModel },
-      /**
-       * Initilize the component
-       */
-      init() {
-        // link component to the corresponding html store item
-        this.em
-          .get('Commands')
-          .run('preset-mautic:link-component-to-store-item', { component: this });
+      // Keep style-default from mj-text so padding etc. render correctly via MJML
+      // compilation. Do not spread baseModel attributes — coreMjmlModel.init() will
+      // re-derive them from style-default, avoiding duplicate style props as raw
+      // HTML attributes on the saved <mj-text> element.
+      const styleDefault = baseModel.prototype.defaults['style-default'];
 
-        // Add toolbar edit button if it's not already in
-        const toolbar = this.get('toolbar');
-        const id = 'toolbar-dynamic-content';
+      const model = {
+        defaults: {
+          ...baseModel.prototype.defaults,
+          name: 'Dynamic Content',
+          tagName: 'mj-text',
+          draggable: '[data-gjs-type=mj-column]',
+          droppable: false,
+          editable: false,
+          stylable: ['padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'],
+          propagate: ['droppable', 'editable'],
+          'style-default': styleDefault,
+          attributes: {
+            'data-gjs-type': DC_TYPE, // Type for GrapesJS
+            'data-slot': DC_SLOT, // used to find the DC component on the canvas for e.g. token transformation
+          },
+        },
+        init() {
+          // coreMjmlModel.init() syncs style-default into attributes and style
+          if (typeof baseModel.prototype.init === 'function') {
+            baseModel.prototype.init.call(this);
+          }
+          addToolbarAndLink(this);
+        },
+      };
 
-        if (!toolbar.filter((tlb) => tlb.id === id).length) {
-          toolbar.unshift({
-            id,
-            command: 'preset-mautic:dynamic-content-open',
-            attributes: { class: 'fa fa-pencil-square-o' },
-          });
-        }
-      },
-      // @todo: show the store items default content on the canvas
-      // updated(property, value, prevValue) {
-      //   console.debug('Local hook: model.updated', {
-      //     property,
-      //     value,
-      //     prevValue,
-      //   });
-      // },
-      // does not work: gets removed when Sorting (by grapesjs)
-      // removed() {
-      //   // Delete dynamic-content on Mautic side
-      //   const component = this.model;
-      //   this.em
-      //     .get('Commands')
-      //     .run('preset-mautic:dynamic-content-delete-store-item', { component });
-      // },
-    };
-
-    const view = {
-      attributes: {
-        style: 'pointer-events: all; display: table; width: 100%;user-select: none;',
-      },
-      events: {
-        dblclick: 'onActive',
-      },
-      // replace token with human readable view
-      // eslint-disable-next-line no-shadow
-      onRender({ editor, model }) {
-        const dcService = new DynamicContentService(editor);
-        const decId = DynamicContentService.getDataParamDecid(model);
-        const dcItem = dcService.getStoreItem(decId);
-        if (typeof dcItem !== 'undefined') {
-          this.el.innerHTML = dcItem.content;
-          dcService.logger.debug('DC: Updated view', dcItem);
-        }
-      },
-      // open the dynamic content modal if the editor is added or double clicked
-      onActive() {
-        const target = this.model;
-        // open the editor in the popup
-        this.em.get('Commands').run('preset-mautic:dynamic-content-open', { target });
-      },
-    };
-
-    // add the Dynamic Content component
-    dc.addType('dynamic-content', {
-      // Dynamic Content component detection
-      isComponent: (el) => {
-        if (
-          typeof el.getAttribute !== 'undefined' &&
-          el.getAttribute('data-slot') === 'dynamicContent'
-        ) {
+      const view = {
+        tagName: 'tr',
+        attributes: {
+          style: 'pointer-events: all; display: table; width: 100%; user-select: none;',
+        },
+        getMjmlTemplate() {
           return {
-            type: 'dynamic-content',
+            start: '<mjml><mj-body><mj-column>',
+            end: '</mj-column></mj-body></mjml>',
           };
-        }
-        return false;
-      },
-      model,
-      view,
-    });
+        },
+        getTemplateFromEl(sandboxEl) {
+          const row = sandboxEl.querySelector('tr');
+          return row ? row.innerHTML : '';
+        },
+        getChildrenSelector() {
+          return 'td > div';
+        },
+        rerender() {
+          this.render();
+        },
+        // After the MJML pipeline renders the <tr> shell, replace the inner
+        // content with the DC item's human-readable HTML.
+        onRender({ editor, model }) {
+          renderDynamicContent(editor, model, (content) => {
+            const container = this.el.querySelector('td > div') || this.el.querySelector('td');
+            if (container) {
+              container.innerHTML = content;
+            }
+          });
+        },
+        onActive() {
+          this.em.get('Commands').run(OPEN_COMMAND, { target: this.model });
+        },
+      };
+
+      // add the Dynamic Content component
+      dc.addType(DC_TYPE, {
+        extend: 'mj-text',
+        extendFnView: ['onActive'],
+        // Dynamic Content component detection
+        isComponent: isDynamicContentComponent,
+        model,
+        view,
+      });
+    } else {
+      const baseType = dc.getType('text');
+      const baseModel = baseType.model;
+
+      const model = {
+        defaults: {
+          ...baseModel.prototype.defaults,
+          name: 'Dynamic Content',
+          tagName: 'div',
+          draggable: '[data-gjs-type=cell],[data-gjs-type=mj-column]',
+          droppable: false,
+          editable: false,
+          stylable: ['padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left'],
+          propagate: ['droppable', 'editable'],
+          style: { ...baseModel.prototype.defaults['style-default'], display: 'block' },
+          attributes: {
+            'data-gjs-type': DC_TYPE,
+            'data-slot': DC_SLOT,
+          },
+        },
+        init() {
+          addToolbarAndLink(this);
+        },
+      };
+
+      const view = {
+        attributes: {
+          style: 'pointer-events: all; display: table; width: 100%; user-select: none;',
+        },
+        events: {
+          dblclick: 'onActive',
+        },
+        onRender({ editor, model }) {
+          renderDynamicContent(editor, model, (content) => {
+            this.el.innerHTML = content;
+          });
+        },
+        onActive() {
+          this.em.get('Commands').run(OPEN_COMMAND, { target: this.model });
+        },
+      };
+
+      dc.addType(DC_TYPE, {
+        isComponent: isDynamicContentComponent,
+        model,
+        view,
+      });
+    }
   }
 }
