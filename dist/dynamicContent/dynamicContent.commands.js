@@ -1,7 +1,6 @@
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 import Logger from '../logger';
-import MjmlService from '../mjml/mjml.service';
 import DynamicContentService from './dynamicContent.service';
 export default class DynamicContentCommands {
   constructor(editor) {
@@ -97,14 +96,11 @@ export default class DynamicContentCommands {
       const dynConId = DynamicContentCommands.getDcStoreId(attributes['data-param-dec-id']);
       const dynConTarget = mQuery(dynConId);
       const dynConName = dynConTarget.find(`${dynConId}_tokenName`).val();
-      const dynConToken = `{dynamiccontent="${dynConName}"}`; // Clear id because it's reloaded by Mautic and this prevent slot to be destroyed by GrapesJs destroy event on close.
-      // dynamicContent.addAttributes({ 'data-param-dec-id': '' });
-
+      const dynConToken = `{dynamiccontent="${dynConName}"}`;
       this.logger.debug("DC: Replaced component's content with its token", {
         dynamicContent,
         dynConToken
       });
-      dynamicContent.components('');
       dynamicContent.set('content', dynConToken);
     });
     return dynamicContents.length;
